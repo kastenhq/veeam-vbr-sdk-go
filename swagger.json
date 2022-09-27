@@ -13434,17 +13434,6 @@
             "format": "uuid"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/WindowsHostModel"
-          },
-          {
-            "$ref": "#/components/schemas/LinuxHostModel"
-          },
-          {
-            "$ref": "#/components/schemas/ViHostModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -13489,17 +13478,6 @@
             "format": "uuid"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/WindowsHostSpec"
-          },
-          {
-            "$ref": "#/components/schemas/LinuxHostSpec"
-          },
-          {
-            "$ref": "#/components/schemas/ViHostSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -13853,50 +13831,6 @@
             "$ref": "#/components/schemas/ERepositoryType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/WindowsLocalStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/LinuxLocalStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/NfsStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/SmbStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureBlobStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureDataBoxStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3StorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonSnowballEdgeStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/S3CompatibleStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/IBMCloudStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3GlacierStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureArchiveStorageSpec"
-          },
-          {
-            "$ref": "#/components/schemas/WasabiCloudStorageSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -13948,50 +13882,6 @@
             "$ref": "#/components/schemas/ERepositoryType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/WindowsLocalStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/LinuxLocalStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/NfsStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/SmbStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureBlobStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureDataBoxStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3StorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonSnowballEdgeStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/S3CompatibleStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/IBMCloudStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3GlacierStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureArchiveStorageModel"
-          },
-          {
-            "$ref": "#/components/schemas/WasabiCloudStorageModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -14540,11 +14430,6 @@
             "$ref": "#/components/schemas/EProxyType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/ViProxySpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -14603,11 +14488,6 @@
             "$ref": "#/components/schemas/EProxyType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/ViProxyModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -15113,11 +14993,6 @@
             "type": "boolean"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/BackupJobModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -15181,11 +15056,6 @@
             "$ref": "#/components/schemas/EJobType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/BackupJobSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -16920,14 +16790,6 @@
             "$ref": "#/components/schemas/ECredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/StandardCredentialsSpec"
-          },
-          {
-            "$ref": "#/components/schemas/LinuxCredentialsSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -17028,14 +16890,6 @@
             "format": "date-time"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/StandardCredentialsModel"
-          },
-          {
-            "$ref": "#/components/schemas/LinuxCredentialsModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -19247,11 +19101,6 @@
             "type": "integer"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/ViBackupObjectModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "platformName",
           "mapping": {
@@ -20101,20 +19950,6 @@
             "$ref": "#/components/schemas/ECloudCredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AmazonCloudCredentialsSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureStorageCloudCredentialsSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureComputeCloudCredentialsSpec"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudCredentialsSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -20150,20 +19985,6 @@
             "$ref": "#/components/schemas/ECloudCredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AmazonCloudCredentialsModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureStorageCloudCredentialsModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureComputeCloudCredentialsModel"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudCredentialsModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -20337,11 +20158,6 @@
             "$ref": "#/components/schemas/ECloudCredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureLinuxHelperApplianceSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -20359,11 +20175,6 @@
             "$ref": "#/components/schemas/ECloudCredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureLinuxHelperApplianceModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -20695,38 +20506,6 @@
             "$ref": "#/components/schemas/ECloudServiceType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureBlobBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureDataBoxBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3BrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/S3CompatibleBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonSnowballEdgeBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudStorageBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/IBMCloudStorageBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureComputeBrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonEC2BrowserSpec"
-          },
-          {
-            "$ref": "#/components/schemas/WasabiCloudStorageBrowserSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "serviceType",
           "mapping": {
@@ -21052,38 +20831,6 @@
             "$ref": "#/components/schemas/ECloudServiceType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureBlobBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureDataBoxBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3BrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonSnowballEdgeBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/S3CompatibleBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudStorageBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/IBMCloudStorageBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/AzureComputeBrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonEC2BrowserModel"
-          },
-          {
-            "$ref": "#/components/schemas/WasabiCloudStorageBrowserModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "serviceType",
           "mapping": {
@@ -22305,32 +22052,6 @@
             "type": "string"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureBlobBrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AzureDataBoxBrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonS3BrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/S3CompatibleBrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/AmazonSnowballEdgeBrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/GoogleCloudStorageBrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/IBMCloudStorageBrowserDestinationSpec"
-          },
-          {
-            "$ref": "#/components/schemas/WasabiCloudStorageBrowserDestinationSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "serviceType",
           "mapping": {
@@ -23903,14 +23624,6 @@
             "type": "string"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/EntireViVMOriginalLocationRestoreSpec"
-          },
-          {
-            "$ref": "#/components/schemas/EntireViVMCustomizedRestoreSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -24108,14 +23821,6 @@
             "type": "string"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/InstantViVMOriginalLocationRecoverySpec"
-          },
-          {
-            "$ref": "#/components/schemas/InstantViVMCustomizedRecoverySpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -24456,11 +24161,6 @@
             "$ref": "#/components/schemas/ECloudCredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureComputeCloudDeviceCodeSpec"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
@@ -24496,11 +24196,6 @@
             "$ref": "#/components/schemas/ECloudCredentialsType"
           }
         },
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/AzureComputeCloudDeviceCodeModel"
-          }
-        ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {

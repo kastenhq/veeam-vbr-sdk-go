@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -26,12 +26,20 @@ const (
 	EREPOSITORYTYPE_SMB ERepositoryType = "Smb"
 	EREPOSITORYTYPE_NFS ERepositoryType = "Nfs"
 	EREPOSITORYTYPE_AZURE_BLOB ERepositoryType = "AzureBlob"
+	EREPOSITORYTYPE_AZURE_DATA_BOX ERepositoryType = "AzureDataBox"
 	EREPOSITORYTYPE_AZURE_ARCHIVE ERepositoryType = "AzureArchive"
 	EREPOSITORYTYPE_AMAZON_S3 ERepositoryType = "AmazonS3"
+	EREPOSITORYTYPE_AMAZON_SNOWBALL_EDGE ERepositoryType = "AmazonSnowballEdge"
 	EREPOSITORYTYPE_AMAZON_S3_GLACIER ERepositoryType = "AmazonS3Glacier"
 	EREPOSITORYTYPE_S3_COMPATIBLE ERepositoryType = "S3Compatible"
 	EREPOSITORYTYPE_GOOGLE_CLOUD ERepositoryType = "GoogleCloud"
 	EREPOSITORYTYPE_IBM_CLOUD ERepositoryType = "IBMCloud"
+	EREPOSITORYTYPE_EXTENDABLE_REPOSITORY ERepositoryType = "ExtendableRepository"
+	EREPOSITORYTYPE_DD_BOOST ERepositoryType = "DDBoost"
+	EREPOSITORYTYPE_EXA_GRID ERepositoryType = "ExaGrid"
+	EREPOSITORYTYPE_HP_STORE_ONCE_INTEGRATION ERepositoryType = "HPStoreOnceIntegration"
+	EREPOSITORYTYPE_QUANTUM ERepositoryType = "Quantum"
+	EREPOSITORYTYPE_WASABI_CLOUD ERepositoryType = "WasabiCloud"
 )
 
 func (v *ERepositoryType) UnmarshalJSON(src []byte) error {
@@ -41,7 +49,7 @@ func (v *ERepositoryType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ERepositoryType(value)
-	for _, existing := range []ERepositoryType{ "WinLocal", "LinuxLocal", "Smb", "Nfs", "AzureBlob", "AzureArchive", "AmazonS3", "AmazonS3Glacier", "S3Compatible", "GoogleCloud", "IBMCloud",   } {
+	for _, existing := range []ERepositoryType{ "WinLocal", "LinuxLocal", "Smb", "Nfs", "AzureBlob", "AzureDataBox", "AzureArchive", "AmazonS3", "AmazonSnowballEdge", "AmazonS3Glacier", "S3Compatible", "GoogleCloud", "IBMCloud", "ExtendableRepository", "DDBoost", "ExaGrid", "HPStoreOnceIntegration", "Quantum", "WasabiCloud",   } {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil

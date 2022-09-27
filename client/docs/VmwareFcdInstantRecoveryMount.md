@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **SessionId** | **string** | ID of the restore session. Use the ID to track the progress. For details, see [Get Session](#operation/GetSession). | 
 **State** | [**EInstantRecoveryMountState**](EInstantRecoveryMountState.md) |  | 
 **Spec** | [**VmwareFcdInstantRecoverySpec**](VmwareFcdInstantRecoverySpec.md) |  | 
-**ErrorMessage** | Pointer to **string** |  | [optional] 
+**ErrorMessage** | Pointer to **string** | Error message. | [optional] 
 **MountedDisks** | Pointer to [**[]VmwareFcdInstantRecoveryDiskInfo**](VmwareFcdInstantRecoveryDiskInfo.md) | Array of mounted disks. | [optional] 
 
 ## Methods

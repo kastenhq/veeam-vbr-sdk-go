@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -23,8 +23,8 @@ type ScaleOutRepositoryModel struct {
 	Name string `json:"name"`
 	// Description of the scale-out backup repository.
 	Description string `json:"description"`
-	// Tag assigned to of the scale-out backup repository.
-	Tag string `json:"tag"`
+	// Tag assigned to the scale-out backup repository.
+	Tag *string `json:"tag,omitempty"`
 	PerformanceTier PerformanceTierModel `json:"performanceTier"`
 	PlacementPolicy *PlacementPolicyModel `json:"placementPolicy,omitempty"`
 	CapacityTier *CapacityTierModel `json:"capacityTier,omitempty"`
@@ -35,12 +35,11 @@ type ScaleOutRepositoryModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewScaleOutRepositoryModel(id string, name string, description string, tag string, performanceTier PerformanceTierModel, ) *ScaleOutRepositoryModel {
+func NewScaleOutRepositoryModel(id string, name string, description string, performanceTier PerformanceTierModel, ) *ScaleOutRepositoryModel {
 	this := ScaleOutRepositoryModel{}
 	this.Id = id
 	this.Name = name
 	this.Description = description
-	this.Tag = tag
 	this.PerformanceTier = performanceTier
 	return &this
 }
@@ -125,28 +124,36 @@ func (o *ScaleOutRepositoryModel) SetDescription(v string) {
 	o.Description = v
 }
 
-// GetTag returns the Tag field value
+// GetTag returns the Tag field value if set, zero value otherwise.
 func (o *ScaleOutRepositoryModel) GetTag() string {
-	if o == nil  {
+	if o == nil || o.Tag == nil {
 		var ret string
 		return ret
 	}
-
-	return o.Tag
+	return *o.Tag
 }
 
-// GetTagOk returns a tuple with the Tag field value
+// GetTagOk returns a tuple with the Tag field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScaleOutRepositoryModel) GetTagOk() (*string, bool) {
-	if o == nil  {
+	if o == nil || o.Tag == nil {
 		return nil, false
 	}
-	return &o.Tag, true
+	return o.Tag, true
 }
 
-// SetTag sets field value
+// HasTag returns a boolean if a field has been set.
+func (o *ScaleOutRepositoryModel) HasTag() bool {
+	if o != nil && o.Tag != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetTag gets a reference to the given string and assigns it to the Tag field.
 func (o *ScaleOutRepositoryModel) SetTag(v string) {
-	o.Tag = v
+	o.Tag = &v
 }
 
 // GetPerformanceTier returns the PerformanceTier field value
@@ -280,7 +287,7 @@ func (o ScaleOutRepositoryModel) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["description"] = o.Description
 	}
-	if true {
+	if o.Tag != nil {
 		toSerialize["tag"] = o.Tag
 	}
 	if true {

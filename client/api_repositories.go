@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -33,6 +33,7 @@ type ApiCreateRepositoryRequest struct {
 	ApiService *RepositoriesApiService
 	xApiVersion *string
 	repositorySpec *RepositorySpec
+	overwriteOwner *bool
 }
 
 func (r ApiCreateRepositoryRequest) XApiVersion(xApiVersion string) ApiCreateRepositoryRequest {
@@ -41,6 +42,10 @@ func (r ApiCreateRepositoryRequest) XApiVersion(xApiVersion string) ApiCreateRep
 }
 func (r ApiCreateRepositoryRequest) RepositorySpec(repositorySpec RepositorySpec) ApiCreateRepositoryRequest {
 	r.repositorySpec = &repositorySpec
+	return r
+}
+func (r ApiCreateRepositoryRequest) OverwriteOwner(overwriteOwner bool) ApiCreateRepositoryRequest {
+	r.overwriteOwner = &overwriteOwner
 	return r
 }
 
@@ -92,6 +97,9 @@ func (a *RepositoriesApiService) CreateRepositoryExecute(r ApiCreateRepositoryRe
 		return localVarReturnValue, nil, reportError("repositorySpec is required and must be specified")
 	}
 
+	if r.overwriteOwner != nil {
+		localVarQueryParams.Add("overwriteOwner", parameterToString(*r.overwriteOwner, ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
 
@@ -112,6 +120,180 @@ func (a *RepositoriesApiService) CreateRepositoryExecute(r ApiCreateRepositoryRe
 	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
 	// body params
 	localVarPostBody = r.repositorySpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiCreateScaleOutRepositoryRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	scaleOutRepositorySpec *ScaleOutRepositorySpec
+}
+
+func (r ApiCreateScaleOutRepositoryRequest) XApiVersion(xApiVersion string) ApiCreateScaleOutRepositoryRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiCreateScaleOutRepositoryRequest) ScaleOutRepositorySpec(scaleOutRepositorySpec ScaleOutRepositorySpec) ApiCreateScaleOutRepositoryRequest {
+	r.scaleOutRepositorySpec = &scaleOutRepositorySpec
+	return r
+}
+
+func (r ApiCreateScaleOutRepositoryRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.CreateScaleOutRepositoryExecute(r)
+}
+
+/*
+ * CreateScaleOutRepository Add Scale-Out Backup Repository
+ * Adds a scale-out backup repository to the backup infrastructure.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiCreateScaleOutRepositoryRequest
+ */
+func (a *RepositoriesApiService) CreateScaleOutRepository(ctx _context.Context) ApiCreateScaleOutRepositoryRequest {
+	return ApiCreateScaleOutRepositoryRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RepositoriesApiService) CreateScaleOutRepositoryExecute(r ApiCreateScaleOutRepositoryRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.CreateScaleOutRepository")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.scaleOutRepositorySpec == nil {
+		return localVarReturnValue, nil, reportError("scaleOutRepositorySpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.scaleOutRepositorySpec
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -258,6 +440,182 @@ func (a *RepositoriesApiService) DeleteRepositoryExecute(r ApiDeleteRepositoryRe
 	}
 
 	localVarPath := localBasePath + "/api/v1/backupInfrastructure/repositories/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	if r.deleteBackups != nil {
+		localVarQueryParams.Add("deleteBackups", parameterToString(*r.deleteBackups, ""))
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiDeleteScaleOutRepositoryRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	deleteBackups *bool
+}
+
+func (r ApiDeleteScaleOutRepositoryRequest) XApiVersion(xApiVersion string) ApiDeleteScaleOutRepositoryRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiDeleteScaleOutRepositoryRequest) DeleteBackups(deleteBackups bool) ApiDeleteScaleOutRepositoryRequest {
+	r.deleteBackups = &deleteBackups
+	return r
+}
+
+func (r ApiDeleteScaleOutRepositoryRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
+	return r.ApiService.DeleteScaleOutRepositoryExecute(r)
+}
+
+/*
+ * DeleteScaleOutRepository Remove Scale-Out Backup Repository
+ * Removes a scale-out backup repository that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository.
+ * @return ApiDeleteScaleOutRepositoryRequest
+ */
+func (a *RepositoriesApiService) DeleteScaleOutRepository(ctx _context.Context, id string) ApiDeleteScaleOutRepositoryRequest {
+	return ApiDeleteScaleOutRepositoryRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return map[string]interface{}
+ */
+func (a *RepositoriesApiService) DeleteScaleOutRepositoryExecute(r ApiDeleteScaleOutRepositoryRequest) (map[string]interface{}, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.DeleteScaleOutRepository")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -556,6 +914,184 @@ func (a *RepositoriesApiService) DisableScaleOutExtentMaintenanceModeExecute(r A
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiDisableScaleOutExtentSealedModeRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	scaleOutExtentMaintenanceSpec *ScaleOutExtentMaintenanceSpec
+}
+
+func (r ApiDisableScaleOutExtentSealedModeRequest) XApiVersion(xApiVersion string) ApiDisableScaleOutExtentSealedModeRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiDisableScaleOutExtentSealedModeRequest) ScaleOutExtentMaintenanceSpec(scaleOutExtentMaintenanceSpec ScaleOutExtentMaintenanceSpec) ApiDisableScaleOutExtentSealedModeRequest {
+	r.scaleOutExtentMaintenanceSpec = &scaleOutExtentMaintenanceSpec
+	return r
+}
+
+func (r ApiDisableScaleOutExtentSealedModeRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.DisableScaleOutExtentSealedModeExecute(r)
+}
+
+/*
+ * DisableScaleOutExtentSealedMode Disable Seal Mode
+ * The HTTP POST request to the `/api/v1/backupInfrastructure/scaleOutRepositories/{id}/disableSealedMode` path allows you to to disable seal mode for a scale-out backup repository extent that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository extent.
+ * @return ApiDisableScaleOutExtentSealedModeRequest
+ */
+func (a *RepositoriesApiService) DisableScaleOutExtentSealedMode(ctx _context.Context, id string) ApiDisableScaleOutExtentSealedModeRequest {
+	return ApiDisableScaleOutExtentSealedModeRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RepositoriesApiService) DisableScaleOutExtentSealedModeExecute(r ApiDisableScaleOutExtentSealedModeRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.DisableScaleOutExtentSealedMode")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}/disableSealedMode"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.scaleOutExtentMaintenanceSpec == nil {
+		return localVarReturnValue, nil, reportError("scaleOutExtentMaintenanceSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.scaleOutExtentMaintenanceSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiEnableScaleOutExtentMaintenanceModeRequest struct {
 	ctx _context.Context
 	ApiService *RepositoriesApiService
@@ -612,6 +1148,362 @@ func (a *RepositoriesApiService) EnableScaleOutExtentMaintenanceModeExecute(r Ap
 	}
 
 	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}/enableMaintenanceMode"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.scaleOutExtentMaintenanceSpec == nil {
+		return localVarReturnValue, nil, reportError("scaleOutExtentMaintenanceSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.scaleOutExtentMaintenanceSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiEnableScaleOutExtentSealedModeRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	scaleOutExtentMaintenanceSpec *ScaleOutExtentMaintenanceSpec
+}
+
+func (r ApiEnableScaleOutExtentSealedModeRequest) XApiVersion(xApiVersion string) ApiEnableScaleOutExtentSealedModeRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiEnableScaleOutExtentSealedModeRequest) ScaleOutExtentMaintenanceSpec(scaleOutExtentMaintenanceSpec ScaleOutExtentMaintenanceSpec) ApiEnableScaleOutExtentSealedModeRequest {
+	r.scaleOutExtentMaintenanceSpec = &scaleOutExtentMaintenanceSpec
+	return r
+}
+
+func (r ApiEnableScaleOutExtentSealedModeRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.EnableScaleOutExtentSealedModeExecute(r)
+}
+
+/*
+ * EnableScaleOutExtentSealedMode Enable Seal Mode
+ * The HTTP POST request to the `/api/v1/backupInfrastructure/scaleOutRepositories/{id}/enableSealedMode` path allows you to to enable seal mode for a scale-out backup repository extent that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository extent.
+ * @return ApiEnableScaleOutExtentSealedModeRequest
+ */
+func (a *RepositoriesApiService) EnableScaleOutExtentSealedMode(ctx _context.Context, id string) ApiEnableScaleOutExtentSealedModeRequest {
+	return ApiEnableScaleOutExtentSealedModeRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RepositoriesApiService) EnableScaleOutExtentSealedModeExecute(r ApiEnableScaleOutExtentSealedModeRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.EnableScaleOutExtentSealedMode")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}/enableSealedMode"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.scaleOutExtentMaintenanceSpec == nil {
+		return localVarReturnValue, nil, reportError("scaleOutExtentMaintenanceSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.scaleOutExtentMaintenanceSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiEvacuateBackupsFromScaleOutExtentRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	scaleOutExtentMaintenanceSpec *ScaleOutExtentMaintenanceSpec
+}
+
+func (r ApiEvacuateBackupsFromScaleOutExtentRequest) XApiVersion(xApiVersion string) ApiEvacuateBackupsFromScaleOutExtentRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiEvacuateBackupsFromScaleOutExtentRequest) ScaleOutExtentMaintenanceSpec(scaleOutExtentMaintenanceSpec ScaleOutExtentMaintenanceSpec) ApiEvacuateBackupsFromScaleOutExtentRequest {
+	r.scaleOutExtentMaintenanceSpec = &scaleOutExtentMaintenanceSpec
+	return r
+}
+
+func (r ApiEvacuateBackupsFromScaleOutExtentRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.EvacuateBackupsFromScaleOutExtentExecute(r)
+}
+
+/*
+ * EvacuateBackupsFromScaleOutExtent Evacuate Backups from Performance Extent
+ * The HTTP POST request to the `/api/v1/backupInfrastructure/scaleOutRepositories/{id}/evacuateBackups` path allows you to evacuate backups from a performance extent that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository extent.
+ * @return ApiEvacuateBackupsFromScaleOutExtentRequest
+ */
+func (a *RepositoriesApiService) EvacuateBackupsFromScaleOutExtent(ctx _context.Context, id string) ApiEvacuateBackupsFromScaleOutExtentRequest {
+	return ApiEvacuateBackupsFromScaleOutExtentRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RepositoriesApiService) EvacuateBackupsFromScaleOutExtentExecute(r ApiEvacuateBackupsFromScaleOutExtentRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.EvacuateBackupsFromScaleOutExtent")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}/evacuateBackups"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1564,6 +2456,174 @@ func (a *RepositoriesApiService) GetRepositoryExecute(r ApiGetRepositoryRequest)
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetRepositoryAccessPermissionsRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+}
+
+func (r ApiGetRepositoryAccessPermissionsRequest) XApiVersion(xApiVersion string) ApiGetRepositoryAccessPermissionsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiGetRepositoryAccessPermissionsRequest) Execute() (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	return r.ApiService.GetRepositoryAccessPermissionsExecute(r)
+}
+
+/*
+ * GetRepositoryAccessPermissions Get Repository Access Permissions
+ * The HTTP GET request to the `/api/v1/backupInfrastructure/repositories/{id}/accessPermissions` path allows you to get access permissions of a repository that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the backup repository.
+ * @return ApiGetRepositoryAccessPermissionsRequest
+ */
+func (a *RepositoriesApiService) GetRepositoryAccessPermissions(ctx _context.Context, id string) ApiGetRepositoryAccessPermissionsRequest {
+	return ApiGetRepositoryAccessPermissionsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return RepositoryAccessPermissionsModel
+ */
+func (a *RepositoriesApiService) GetRepositoryAccessPermissionsExecute(r ApiGetRepositoryAccessPermissionsRequest) (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  RepositoryAccessPermissionsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.GetRepositoryAccessPermissions")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/repositories/{id}/accessPermissions"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetScaleOutRepositoryRequest struct {
 	ctx _context.Context
 	ApiService *RepositoriesApiService
@@ -1615,6 +2675,174 @@ func (a *RepositoriesApiService) GetScaleOutRepositoryExecute(r ApiGetScaleOutRe
 	}
 
 	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetScaleOutRepositoryAccessPermissionsRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+}
+
+func (r ApiGetScaleOutRepositoryAccessPermissionsRequest) XApiVersion(xApiVersion string) ApiGetScaleOutRepositoryAccessPermissionsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiGetScaleOutRepositoryAccessPermissionsRequest) Execute() (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	return r.ApiService.GetScaleOutRepositoryAccessPermissionsExecute(r)
+}
+
+/*
+ * GetScaleOutRepositoryAccessPermissions Get Scale-Out Backup Repository Access Permissions
+ * The HTTP GET request to the `/api/v1/backupInfrastructure/scaleOutRepositories/{id}/accessPermissions` path allows you to get access permissions of a scale-out backup repository that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository.
+ * @return ApiGetScaleOutRepositoryAccessPermissionsRequest
+ */
+func (a *RepositoriesApiService) GetScaleOutRepositoryAccessPermissions(ctx _context.Context, id string) ApiGetScaleOutRepositoryAccessPermissionsRequest {
+	return ApiGetScaleOutRepositoryAccessPermissionsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return RepositoryAccessPermissionsModel
+ */
+func (a *RepositoriesApiService) GetScaleOutRepositoryAccessPermissionsExecute(r ApiGetScaleOutRepositoryAccessPermissionsRequest) (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  RepositoryAccessPermissionsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.GetScaleOutRepositoryAccessPermissions")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}/accessPermissions"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1865,6 +3093,550 @@ func (a *RepositoriesApiService) UpdateRepositoryExecute(r ApiUpdateRepositoryRe
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateRepositoryAccessPermissionsRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	repositoryAccessPermissionsModel *RepositoryAccessPermissionsModel
+}
+
+func (r ApiUpdateRepositoryAccessPermissionsRequest) XApiVersion(xApiVersion string) ApiUpdateRepositoryAccessPermissionsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiUpdateRepositoryAccessPermissionsRequest) RepositoryAccessPermissionsModel(repositoryAccessPermissionsModel RepositoryAccessPermissionsModel) ApiUpdateRepositoryAccessPermissionsRequest {
+	r.repositoryAccessPermissionsModel = &repositoryAccessPermissionsModel
+	return r
+}
+
+func (r ApiUpdateRepositoryAccessPermissionsRequest) Execute() (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	return r.ApiService.UpdateRepositoryAccessPermissionsExecute(r)
+}
+
+/*
+ * UpdateRepositoryAccessPermissions Edit Repository Access Permissions
+ * The HTTP PUT request to the `/api/v1/backupInfrastructure/repositories/{id}/accessPermissions` path allows you to edit access permissions of a repository that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the backup repository.
+ * @return ApiUpdateRepositoryAccessPermissionsRequest
+ */
+func (a *RepositoriesApiService) UpdateRepositoryAccessPermissions(ctx _context.Context, id string) ApiUpdateRepositoryAccessPermissionsRequest {
+	return ApiUpdateRepositoryAccessPermissionsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return RepositoryAccessPermissionsModel
+ */
+func (a *RepositoriesApiService) UpdateRepositoryAccessPermissionsExecute(r ApiUpdateRepositoryAccessPermissionsRequest) (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  RepositoryAccessPermissionsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.UpdateRepositoryAccessPermissions")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/repositories/{id}/accessPermissions"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.repositoryAccessPermissionsModel == nil {
+		return localVarReturnValue, nil, reportError("repositoryAccessPermissionsModel is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.repositoryAccessPermissionsModel
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateScaleOutRepositoryRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	scaleOutRepositoryModel *ScaleOutRepositoryModel
+}
+
+func (r ApiUpdateScaleOutRepositoryRequest) XApiVersion(xApiVersion string) ApiUpdateScaleOutRepositoryRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiUpdateScaleOutRepositoryRequest) ScaleOutRepositoryModel(scaleOutRepositoryModel ScaleOutRepositoryModel) ApiUpdateScaleOutRepositoryRequest {
+	r.scaleOutRepositoryModel = &scaleOutRepositoryModel
+	return r
+}
+
+func (r ApiUpdateScaleOutRepositoryRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.UpdateScaleOutRepositoryExecute(r)
+}
+
+/*
+ * UpdateScaleOutRepository Edit Scale-Out Backup Repository
+ * Edits a scale-out backup repository that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository.
+ * @return ApiUpdateScaleOutRepositoryRequest
+ */
+func (a *RepositoriesApiService) UpdateScaleOutRepository(ctx _context.Context, id string) ApiUpdateScaleOutRepositoryRequest {
+	return ApiUpdateScaleOutRepositoryRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RepositoriesApiService) UpdateScaleOutRepositoryExecute(r ApiUpdateScaleOutRepositoryRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.UpdateScaleOutRepository")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.scaleOutRepositoryModel == nil {
+		return localVarReturnValue, nil, reportError("scaleOutRepositoryModel is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.scaleOutRepositoryModel
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateScaleOutRepositoryAccessPermissionsRequest struct {
+	ctx _context.Context
+	ApiService *RepositoriesApiService
+	xApiVersion *string
+	id string
+	repositoryAccessPermissionsModel *RepositoryAccessPermissionsModel
+}
+
+func (r ApiUpdateScaleOutRepositoryAccessPermissionsRequest) XApiVersion(xApiVersion string) ApiUpdateScaleOutRepositoryAccessPermissionsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiUpdateScaleOutRepositoryAccessPermissionsRequest) RepositoryAccessPermissionsModel(repositoryAccessPermissionsModel RepositoryAccessPermissionsModel) ApiUpdateScaleOutRepositoryAccessPermissionsRequest {
+	r.repositoryAccessPermissionsModel = &repositoryAccessPermissionsModel
+	return r
+}
+
+func (r ApiUpdateScaleOutRepositoryAccessPermissionsRequest) Execute() (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	return r.ApiService.UpdateScaleOutRepositoryAccessPermissionsExecute(r)
+}
+
+/*
+ * UpdateScaleOutRepositoryAccessPermissions Edit Scale-Out Backup Repository Access Permissions
+ * The HTTP PUT request to the `/api/v1/backupInfrastructure/scaleOutRepositories/{id}/accessPermissions` path allows you to to edit access permissions of a scale-out backup repository that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the scale-out backup repository.
+ * @return ApiUpdateScaleOutRepositoryAccessPermissionsRequest
+ */
+func (a *RepositoriesApiService) UpdateScaleOutRepositoryAccessPermissions(ctx _context.Context, id string) ApiUpdateScaleOutRepositoryAccessPermissionsRequest {
+	return ApiUpdateScaleOutRepositoryAccessPermissionsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return RepositoryAccessPermissionsModel
+ */
+func (a *RepositoriesApiService) UpdateScaleOutRepositoryAccessPermissionsExecute(r ApiUpdateScaleOutRepositoryAccessPermissionsRequest) (RepositoryAccessPermissionsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  RepositoryAccessPermissionsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RepositoriesApiService.UpdateScaleOutRepositoryAccessPermissions")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/backupInfrastructure/scaleOutRepositories/{id}/accessPermissions"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.repositoryAccessPermissionsModel == nil {
+		return localVarReturnValue, nil, reportError("repositoryAccessPermissionsModel is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.repositoryAccessPermissionsModel
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v Error

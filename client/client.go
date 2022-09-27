@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -41,7 +41,7 @@ var (
 	xmlCheck  = regexp.MustCompile(`(?i:(?:application|text)/xml)`)
 )
 
-// APIClient manages communication with the Veeam Backup &amp; Replication REST API API v1.0-rev2
+// APIClient manages communication with the Veeam Backup &amp; Replication REST API API v1.1-rev0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -49,11 +49,15 @@ type APIClient struct {
 
 	// API Services
 
+	AgentsApi *AgentsApiService
+
 	AutomationApi *AutomationApiService
 
 	BackupObjectsApi *BackupObjectsApiService
 
 	BackupsApi *BackupsApiService
+
+	CloudBrowserApi *CloudBrowserApiService
 
 	ConfigurationBackupApi *ConfigurationBackupApiService
 
@@ -106,9 +110,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.AgentsApi = (*AgentsApiService)(&c.common)
 	c.AutomationApi = (*AutomationApiService)(&c.common)
 	c.BackupObjectsApi = (*BackupObjectsApiService)(&c.common)
 	c.BackupsApi = (*BackupsApiService)(&c.common)
+	c.CloudBrowserApi = (*CloudBrowserApiService)(&c.common)
 	c.ConfigurationBackupApi = (*ConfigurationBackupApiService)(&c.common)
 	c.ConnectionApi = (*ConnectionApiService)(&c.common)
 	c.CredentialsApi = (*CredentialsApiService)(&c.common)

@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -19,8 +19,10 @@ import (
 type WindowsLocalRepositorySettingsModel struct {
 	// Path to the folder where backup files are stored.
 	Path *string `json:"path,omitempty"`
+	EnableTaskLimit *bool `json:"enableTaskLimit,omitempty"`
 	// Maximum number of concurrent tasks.
 	MaxTaskCount *int32 `json:"maxTaskCount,omitempty"`
+	EnableReadWriteLimit *bool `json:"enableReadWriteLimit,omitempty"`
 	// Maximum rate that restricts the total speed of reading and writing data to the backup repository disk.
 	ReadWriteRate *int32 `json:"readWriteRate,omitempty"`
 	AdvancedSettings *RepositoryAdvancedSettingsModel `json:"advancedSettings,omitempty"`
@@ -75,6 +77,38 @@ func (o *WindowsLocalRepositorySettingsModel) SetPath(v string) {
 	o.Path = &v
 }
 
+// GetEnableTaskLimit returns the EnableTaskLimit field value if set, zero value otherwise.
+func (o *WindowsLocalRepositorySettingsModel) GetEnableTaskLimit() bool {
+	if o == nil || o.EnableTaskLimit == nil {
+		var ret bool
+		return ret
+	}
+	return *o.EnableTaskLimit
+}
+
+// GetEnableTaskLimitOk returns a tuple with the EnableTaskLimit field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WindowsLocalRepositorySettingsModel) GetEnableTaskLimitOk() (*bool, bool) {
+	if o == nil || o.EnableTaskLimit == nil {
+		return nil, false
+	}
+	return o.EnableTaskLimit, true
+}
+
+// HasEnableTaskLimit returns a boolean if a field has been set.
+func (o *WindowsLocalRepositorySettingsModel) HasEnableTaskLimit() bool {
+	if o != nil && o.EnableTaskLimit != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnableTaskLimit gets a reference to the given bool and assigns it to the EnableTaskLimit field.
+func (o *WindowsLocalRepositorySettingsModel) SetEnableTaskLimit(v bool) {
+	o.EnableTaskLimit = &v
+}
+
 // GetMaxTaskCount returns the MaxTaskCount field value if set, zero value otherwise.
 func (o *WindowsLocalRepositorySettingsModel) GetMaxTaskCount() int32 {
 	if o == nil || o.MaxTaskCount == nil {
@@ -105,6 +139,38 @@ func (o *WindowsLocalRepositorySettingsModel) HasMaxTaskCount() bool {
 // SetMaxTaskCount gets a reference to the given int32 and assigns it to the MaxTaskCount field.
 func (o *WindowsLocalRepositorySettingsModel) SetMaxTaskCount(v int32) {
 	o.MaxTaskCount = &v
+}
+
+// GetEnableReadWriteLimit returns the EnableReadWriteLimit field value if set, zero value otherwise.
+func (o *WindowsLocalRepositorySettingsModel) GetEnableReadWriteLimit() bool {
+	if o == nil || o.EnableReadWriteLimit == nil {
+		var ret bool
+		return ret
+	}
+	return *o.EnableReadWriteLimit
+}
+
+// GetEnableReadWriteLimitOk returns a tuple with the EnableReadWriteLimit field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WindowsLocalRepositorySettingsModel) GetEnableReadWriteLimitOk() (*bool, bool) {
+	if o == nil || o.EnableReadWriteLimit == nil {
+		return nil, false
+	}
+	return o.EnableReadWriteLimit, true
+}
+
+// HasEnableReadWriteLimit returns a boolean if a field has been set.
+func (o *WindowsLocalRepositorySettingsModel) HasEnableReadWriteLimit() bool {
+	if o != nil && o.EnableReadWriteLimit != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnableReadWriteLimit gets a reference to the given bool and assigns it to the EnableReadWriteLimit field.
+func (o *WindowsLocalRepositorySettingsModel) SetEnableReadWriteLimit(v bool) {
+	o.EnableReadWriteLimit = &v
 }
 
 // GetReadWriteRate returns the ReadWriteRate field value if set, zero value otherwise.
@@ -176,8 +242,14 @@ func (o WindowsLocalRepositorySettingsModel) MarshalJSON() ([]byte, error) {
 	if o.Path != nil {
 		toSerialize["path"] = o.Path
 	}
+	if o.EnableTaskLimit != nil {
+		toSerialize["enableTaskLimit"] = o.EnableTaskLimit
+	}
 	if o.MaxTaskCount != nil {
 		toSerialize["maxTaskCount"] = o.MaxTaskCount
+	}
+	if o.EnableReadWriteLimit != nil {
+		toSerialize["enableReadWriteLimit"] = o.EnableReadWriteLimit
 	}
 	if o.ReadWriteRate != nil {
 		toSerialize["readWriteRate"] = o.ReadWriteRate

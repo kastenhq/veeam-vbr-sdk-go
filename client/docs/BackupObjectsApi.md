@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of backup objects to skip. (optional)
     limit := int32(56) // int32 | Maximum number of backup objects to return. (optional)
     orderColumn := openapiclient.EBackupObjectsFiltersOrderColumn("Name") // EBackupObjectsFiltersOrderColumn | Sorts backup objects by one of the backup object parameters. (optional)
@@ -65,7 +65,7 @@ Other parameters are passed through a pointer to a apiGetAllBackupObjectsRequest
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of backup objects to skip. | 
  **limit** | **int32** | Maximum number of backup objects to return. | 
  **orderColumn** | [**EBackupObjectsFiltersOrderColumn**](EBackupObjectsFiltersOrderColumn.md) | Sorts backup objects by one of the backup object parameters. | 
@@ -115,7 +115,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup object.
 
     configuration := openapiclient.NewConfiguration()
@@ -145,7 +145,7 @@ Other parameters are passed through a pointer to a apiGetBackupObjectRequest str
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -187,7 +187,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup object.
 
     configuration := openapiclient.NewConfiguration()
@@ -217,7 +217,7 @@ Other parameters are passed through a pointer to a apiGetBackupObjectRestorePoin
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type

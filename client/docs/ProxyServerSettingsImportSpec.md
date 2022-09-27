@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **HostTag** | Pointer to **string** | Tag assigned to the server. | [optional] 
 **TransportMode** | Pointer to [**EBackupProxyTransportMode**](EBackupProxyTransportMode.md) |  | [optional] 
 **FailoverToNetwork** | Pointer to **bool** |  | [optional] 
-**HostToProxyEncryption** | Pointer to **bool** | [For the Network mode] If *true*, VM data is transferred over an encrypted TLS connection.  | [optional] 
+**HostToProxyEncryption** | Pointer to **bool** | (For the Network mode) If *true*, VM data is transferred over an encrypted TLS connection. | [optional] 
 **ConnectedDatastores** | Pointer to [**ProxyDatastoreSettingsModel**](ProxyDatastoreSettingsModel.md) |  | [optional] 
 **MaxTaskCount** | Pointer to **int32** | Maximum number of concurrent tasks. | [optional] 
 

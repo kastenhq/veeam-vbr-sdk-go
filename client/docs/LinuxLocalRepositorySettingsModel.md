@@ -5,9 +5,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Path** | Pointer to **string** | Path to the folder where backup files are stored. | [optional] 
+**EnableTaskLimit** | Pointer to **bool** |  | [optional] 
 **MaxTaskCount** | Pointer to **int32** | Maximum number of concurrent tasks. | [optional] 
+**EnableReadWriteLimit** | Pointer to **bool** |  | [optional] 
 **ReadWriteRate** | Pointer to **int32** | Maximum rate that restricts the total speed of reading and writing data to the backup repository disk. | [optional] 
-**UseFastCloningOnXFSVolumes** | Pointer to **bool** | [For Linux repository] If *true*, fast cloning on XFS volumes is used.  | [optional] 
+**UseFastCloningOnXFSVolumes** | Pointer to **bool** | (For Linux repository) If *true*, fast cloning on XFS volumes is used. | [optional] 
 **UseImmutableBackups** | Pointer to **bool** | If *true*, the Object Lock feature is used to protect recent backups. | [optional] 
 **MakeRecentBackupsImmutableDays** | Pointer to **int32** | Number of days to keep immutable backups. | [optional] 
 **AdvancedSettings** | Pointer to [**RepositoryAdvancedSettingsModel**](RepositoryAdvancedSettingsModel.md) |  | [optional] 
@@ -56,6 +58,31 @@ SetPath sets Path field to given value.
 
 HasPath returns a boolean if a field has been set.
 
+### GetEnableTaskLimit
+
+`func (o *LinuxLocalRepositorySettingsModel) GetEnableTaskLimit() bool`
+
+GetEnableTaskLimit returns the EnableTaskLimit field if non-nil, zero value otherwise.
+
+### GetEnableTaskLimitOk
+
+`func (o *LinuxLocalRepositorySettingsModel) GetEnableTaskLimitOk() (*bool, bool)`
+
+GetEnableTaskLimitOk returns a tuple with the EnableTaskLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnableTaskLimit
+
+`func (o *LinuxLocalRepositorySettingsModel) SetEnableTaskLimit(v bool)`
+
+SetEnableTaskLimit sets EnableTaskLimit field to given value.
+
+### HasEnableTaskLimit
+
+`func (o *LinuxLocalRepositorySettingsModel) HasEnableTaskLimit() bool`
+
+HasEnableTaskLimit returns a boolean if a field has been set.
+
 ### GetMaxTaskCount
 
 `func (o *LinuxLocalRepositorySettingsModel) GetMaxTaskCount() int32`
@@ -80,6 +107,31 @@ SetMaxTaskCount sets MaxTaskCount field to given value.
 `func (o *LinuxLocalRepositorySettingsModel) HasMaxTaskCount() bool`
 
 HasMaxTaskCount returns a boolean if a field has been set.
+
+### GetEnableReadWriteLimit
+
+`func (o *LinuxLocalRepositorySettingsModel) GetEnableReadWriteLimit() bool`
+
+GetEnableReadWriteLimit returns the EnableReadWriteLimit field if non-nil, zero value otherwise.
+
+### GetEnableReadWriteLimitOk
+
+`func (o *LinuxLocalRepositorySettingsModel) GetEnableReadWriteLimitOk() (*bool, bool)`
+
+GetEnableReadWriteLimitOk returns a tuple with the EnableReadWriteLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEnableReadWriteLimit
+
+`func (o *LinuxLocalRepositorySettingsModel) SetEnableReadWriteLimit(v bool)`
+
+SetEnableReadWriteLimit sets EnableReadWriteLimit field to given value.
+
+### HasEnableReadWriteLimit
+
+`func (o *LinuxLocalRepositorySettingsModel) HasEnableReadWriteLimit() bool`
+
+HasEnableReadWriteLimit returns a boolean if a field has been set.
 
 ### GetReadWriteRate
 

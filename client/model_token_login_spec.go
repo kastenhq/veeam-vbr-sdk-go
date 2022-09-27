@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -28,6 +28,8 @@ type TokenLoginSpec struct {
 	Code *string `json:"code,omitempty"`
 	// If *true*, a short-term refresh token is used. Lifetime of the short-term refresh token is the access token lifetime plus 15 minutes.
 	UseShortTermRefresh *bool `json:"use_short_term_refresh,omitempty"`
+	// VBR platform service toekn
+	VbrToken *string `json:"vbr_token,omitempty"`
 }
 
 // NewTokenLoginSpec instantiates a new TokenLoginSpec object
@@ -234,6 +236,38 @@ func (o *TokenLoginSpec) SetUseShortTermRefresh(v bool) {
 	o.UseShortTermRefresh = &v
 }
 
+// GetVbrToken returns the VbrToken field value if set, zero value otherwise.
+func (o *TokenLoginSpec) GetVbrToken() string {
+	if o == nil || o.VbrToken == nil {
+		var ret string
+		return ret
+	}
+	return *o.VbrToken
+}
+
+// GetVbrTokenOk returns a tuple with the VbrToken field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TokenLoginSpec) GetVbrTokenOk() (*string, bool) {
+	if o == nil || o.VbrToken == nil {
+		return nil, false
+	}
+	return o.VbrToken, true
+}
+
+// HasVbrToken returns a boolean if a field has been set.
+func (o *TokenLoginSpec) HasVbrToken() bool {
+	if o != nil && o.VbrToken != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetVbrToken gets a reference to the given string and assigns it to the VbrToken field.
+func (o *TokenLoginSpec) SetVbrToken(v string) {
+	o.VbrToken = &v
+}
+
 func (o TokenLoginSpec) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
@@ -253,6 +287,9 @@ func (o TokenLoginSpec) MarshalJSON() ([]byte, error) {
 	}
 	if o.UseShortTermRefresh != nil {
 		toSerialize["use_short_term_refresh"] = o.UseShortTermRefresh
+	}
+	if o.VbrToken != nil {
+		toSerialize["vbr_token"] = o.VbrToken
 	}
 	return json.Marshal(toSerialize)
 }

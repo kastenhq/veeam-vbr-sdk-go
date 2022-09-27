@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -27,6 +27,394 @@ var (
 
 // RestoreApiService RestoreApi service
 type RestoreApiService service
+
+type ApiEntireVmRestoreVmwareRequest struct {
+	ctx _context.Context
+	ApiService *RestoreApiService
+	xApiVersion *string
+	entireViVMRestoreSpec *EntireViVMRestoreSpec
+}
+
+func (r ApiEntireVmRestoreVmwareRequest) XApiVersion(xApiVersion string) ApiEntireVmRestoreVmwareRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiEntireVmRestoreVmwareRequest) EntireViVMRestoreSpec(entireViVMRestoreSpec EntireViVMRestoreSpec) ApiEntireVmRestoreVmwareRequest {
+	r.entireViVMRestoreSpec = &entireViVMRestoreSpec
+	return r
+}
+
+func (r ApiEntireVmRestoreVmwareRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.EntireVmRestoreVmwareExecute(r)
+}
+
+/*
+ * EntireVmRestoreVmware Start Entire VM Restore
+ * The HTTP POST request to the `/api/v1/restore/vmRestore/vmware/` path allows you to start entire VM restore from the specified restore point to the specified host. For details on how to get a host model, see [Get VMware vSphere Server Objects](#operation/GetVmwareHostObject).
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiEntireVmRestoreVmwareRequest
+ */
+func (a *RestoreApiService) EntireVmRestoreVmware(ctx _context.Context) ApiEntireVmRestoreVmwareRequest {
+	return ApiEntireVmRestoreVmwareRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RestoreApiService) EntireVmRestoreVmwareExecute(r ApiEntireVmRestoreVmwareRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RestoreApiService.EntireVmRestoreVmware")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/restore/vmRestore/vmware/"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.entireViVMRestoreSpec == nil {
+		return localVarReturnValue, nil, reportError("entireViVMRestoreSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.entireViVMRestoreSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetAllInstantViVMRecoveryMountsRequest struct {
+	ctx _context.Context
+	ApiService *RestoreApiService
+	xApiVersion *string
+	skip *int32
+	limit *int32
+	orderColumn *EInstantViVMRecoveryMountsFiltersOrderColumn
+	orderAsc *bool
+	stateFilter *EInstantRecoveryMountState
+}
+
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) XApiVersion(xApiVersion string) ApiGetAllInstantViVMRecoveryMountsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) Skip(skip int32) ApiGetAllInstantViVMRecoveryMountsRequest {
+	r.skip = &skip
+	return r
+}
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) Limit(limit int32) ApiGetAllInstantViVMRecoveryMountsRequest {
+	r.limit = &limit
+	return r
+}
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) OrderColumn(orderColumn EInstantViVMRecoveryMountsFiltersOrderColumn) ApiGetAllInstantViVMRecoveryMountsRequest {
+	r.orderColumn = &orderColumn
+	return r
+}
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) OrderAsc(orderAsc bool) ApiGetAllInstantViVMRecoveryMountsRequest {
+	r.orderAsc = &orderAsc
+	return r
+}
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) StateFilter(stateFilter EInstantRecoveryMountState) ApiGetAllInstantViVMRecoveryMountsRequest {
+	r.stateFilter = &stateFilter
+	return r
+}
+
+func (r ApiGetAllInstantViVMRecoveryMountsRequest) Execute() (InstantViVMRecoveryMountsResult, *_nethttp.Response, error) {
+	return r.ApiService.GetAllInstantViVMRecoveryMountsExecute(r)
+}
+
+/*
+ * GetAllInstantViVMRecoveryMounts Get All VM Mounts
+ * The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/vm/` The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/vm/` path allows you to get an array of VM mounts.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiGetAllInstantViVMRecoveryMountsRequest
+ */
+func (a *RestoreApiService) GetAllInstantViVMRecoveryMounts(ctx _context.Context) ApiGetAllInstantViVMRecoveryMountsRequest {
+	return ApiGetAllInstantViVMRecoveryMountsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return InstantViVMRecoveryMountsResult
+ */
+func (a *RestoreApiService) GetAllInstantViVMRecoveryMountsExecute(r ApiGetAllInstantViVMRecoveryMountsRequest) (InstantViVMRecoveryMountsResult, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  InstantViVMRecoveryMountsResult
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RestoreApiService.GetAllInstantViVMRecoveryMounts")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/restore/instantRecovery/vmware/vm/"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	if r.skip != nil {
+		localVarQueryParams.Add("skip", parameterToString(*r.skip, ""))
+	}
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+	}
+	if r.orderColumn != nil {
+		localVarQueryParams.Add("orderColumn", parameterToString(*r.orderColumn, ""))
+	}
+	if r.orderAsc != nil {
+		localVarQueryParams.Add("orderAsc", parameterToString(*r.orderAsc, ""))
+	}
+	if r.stateFilter != nil {
+		localVarQueryParams.Add("stateFilter", parameterToString(*r.stateFilter, ""))
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiGetAllVmwareFcdInstantRecoveryMountModelsRequest struct {
 	ctx _context.Context
@@ -69,8 +457,8 @@ func (r ApiGetAllVmwareFcdInstantRecoveryMountModelsRequest) Execute() (VmwareFc
 }
 
 /*
- * GetAllVmwareFcdInstantRecoveryMountModels Get All FCD Mounts Information
- * The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/vm/` [TODO]
+ * GetAllVmwareFcdInstantRecoveryMountModels Get All FCD Mounts
+ * The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/fcd` path allows you to get an array of FCD mounts.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @return ApiGetAllVmwareFcdInstantRecoveryMountModelsRequest
  */
@@ -232,6 +620,174 @@ func (a *RestoreApiService) GetAllVmwareFcdInstantRecoveryMountModelsExecute(r A
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetInstantViVMRecoveryMountRequest struct {
+	ctx _context.Context
+	ApiService *RestoreApiService
+	xApiVersion *string
+	mountId string
+}
+
+func (r ApiGetInstantViVMRecoveryMountRequest) XApiVersion(xApiVersion string) ApiGetInstantViVMRecoveryMountRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiGetInstantViVMRecoveryMountRequest) Execute() (InstantViVMRecoveryMount, *_nethttp.Response, error) {
+	return r.ApiService.GetInstantViVMRecoveryMountExecute(r)
+}
+
+/*
+ * GetInstantViVMRecoveryMount Get VM Mount
+ * The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/vm/{mountId}` path allows you to get information about the mounted vPower NFS datastore, such as restore session ID, mount state, instant VM recovery settings and VMs that will be recovered.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param mountId Mount ID.
+ * @return ApiGetInstantViVMRecoveryMountRequest
+ */
+func (a *RestoreApiService) GetInstantViVMRecoveryMount(ctx _context.Context, mountId string) ApiGetInstantViVMRecoveryMountRequest {
+	return ApiGetInstantViVMRecoveryMountRequest{
+		ApiService: a,
+		ctx: ctx,
+		mountId: mountId,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return InstantViVMRecoveryMount
+ */
+func (a *RestoreApiService) GetInstantViVMRecoveryMountExecute(r ApiGetInstantViVMRecoveryMountRequest) (InstantViVMRecoveryMount, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  InstantViVMRecoveryMount
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RestoreApiService.GetInstantViVMRecoveryMount")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/restore/instantRecovery/vmware/vm/{mountId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"mountId"+"}", _neturl.PathEscape(parameterToString(r.mountId, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetVmwareFcdInstantRecoveryMountModelRequest struct {
 	ctx _context.Context
 	ApiService *RestoreApiService
@@ -249,8 +805,8 @@ func (r ApiGetVmwareFcdInstantRecoveryMountModelRequest) Execute() (VmwareFcdIns
 }
 
 /*
- * GetVmwareFcdInstantRecoveryMountModel Get Mount Information
- * The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/fcd/{mountId}` path allows you to get information about the mounted vPower NFS datastore, such as restore session ID, mount state, instant recovery settings and disks that will be recovered.
+ * GetVmwareFcdInstantRecoveryMountModel Get FCD Mount
+ * The HTTP GET request to the `/api/v1/restore/instantRecovery/vmware/fcd/{mountId}` path allows you to get information about the mounted vPower NFS datastore, such as restore session ID, mount state, instant FCD recovery settings and disks that will be recovered.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param mountId Mount ID.
  * @return ApiGetVmwareFcdInstantRecoveryMountModelRequest
@@ -788,9 +1344,7 @@ func (r ApiInstantRecoveryVmwareFcdMountWithSessionRequest) Execute() (SessionMo
 
 /*
  * InstantRecoveryVmwareFcdMountWithSession Start Instant FCD Recovery
- * The HTTP POST request to the `/api/v1/restore/instantRecovery/vmware/fcd/` path allows you to start Instant FCD Recovery from the restore point to the destination cluster.</br>
-Specify the destination cluster in the `destinationCluster` parameter of the request body as a model of the VMware vSphere object. For details on how to get the cluster model, see [Get VMware vSphere Server Objects](#operation/GetVmwareHostObject).
-
+ * The HTTP POST request to the `/api/v1/restore/instantRecovery/vmware/fcd/` path allows you to start Instant FCD Recovery from the restore point to the destination cluster.<br>Specify the destination cluster in the `destinationCluster` parameter of the request body as a model of the VMware vSphere object. For details on how to get the cluster model, see [Get VMware vSphere Server Objects](#operation/GetVmwareHostObject).
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @return ApiInstantRecoveryVmwareFcdMountWithSessionRequest
  */
@@ -852,6 +1406,556 @@ func (a *RestoreApiService) InstantRecoveryVmwareFcdMountWithSessionExecute(r Ap
 	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
 	// body params
 	localVarPostBody = r.vmwareFcdInstantRecoverySpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiInstantViVMRecoveryMigrateRequest struct {
+	ctx _context.Context
+	ApiService *RestoreApiService
+	xApiVersion *string
+	mountId string
+	viVMQuickMigrationSpec *ViVMQuickMigrationSpec
+}
+
+func (r ApiInstantViVMRecoveryMigrateRequest) XApiVersion(xApiVersion string) ApiInstantViVMRecoveryMigrateRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiInstantViVMRecoveryMigrateRequest) ViVMQuickMigrationSpec(viVMQuickMigrationSpec ViVMQuickMigrationSpec) ApiInstantViVMRecoveryMigrateRequest {
+	r.viVMQuickMigrationSpec = &viVMQuickMigrationSpec
+	return r
+}
+
+func (r ApiInstantViVMRecoveryMigrateRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.InstantViVMRecoveryMigrateExecute(r)
+}
+
+/*
+ * InstantViVMRecoveryMigrate Start VM Migration
+ * The HTTP POST request to the `/api/v1/restore/instantRecovery/vmware/vm/{mountId}/migrate` path allows you to start migration of VMs from the specified mount.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param mountId Mount ID.
+ * @return ApiInstantViVMRecoveryMigrateRequest
+ */
+func (a *RestoreApiService) InstantViVMRecoveryMigrate(ctx _context.Context, mountId string) ApiInstantViVMRecoveryMigrateRequest {
+	return ApiInstantViVMRecoveryMigrateRequest{
+		ApiService: a,
+		ctx: ctx,
+		mountId: mountId,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RestoreApiService) InstantViVMRecoveryMigrateExecute(r ApiInstantViVMRecoveryMigrateRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RestoreApiService.InstantViVMRecoveryMigrate")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/restore/instantRecovery/vmware/vm/{mountId}/migrate"
+	localVarPath = strings.Replace(localVarPath, "{"+"mountId"+"}", _neturl.PathEscape(parameterToString(r.mountId, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.viVMQuickMigrationSpec == nil {
+		return localVarReturnValue, nil, reportError("viVMQuickMigrationSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.viVMQuickMigrationSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiInstantViVMRecoveryMountRequest struct {
+	ctx _context.Context
+	ApiService *RestoreApiService
+	xApiVersion *string
+	instantViVMRecoverySpec *InstantViVMRecoverySpec
+}
+
+func (r ApiInstantViVMRecoveryMountRequest) XApiVersion(xApiVersion string) ApiInstantViVMRecoveryMountRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiInstantViVMRecoveryMountRequest) InstantViVMRecoverySpec(instantViVMRecoverySpec InstantViVMRecoverySpec) ApiInstantViVMRecoveryMountRequest {
+	r.instantViVMRecoverySpec = &instantViVMRecoverySpec
+	return r
+}
+
+func (r ApiInstantViVMRecoveryMountRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.InstantViVMRecoveryMountExecute(r)
+}
+
+/*
+ * InstantViVMRecoveryMount Start Instant VM Recovery
+ * The HTTP POST request to the `/api/v1/restore/instantRecovery/vmware/vm/` path allows you to start Instant VM Recovery from the specified restore point to the specified host. For details on how to get a host model, see [Get VMware vSphere Server Objects](#operation/GetVmwareHostObject).
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiInstantViVMRecoveryMountRequest
+ */
+func (a *RestoreApiService) InstantViVMRecoveryMount(ctx _context.Context) ApiInstantViVMRecoveryMountRequest {
+	return ApiInstantViVMRecoveryMountRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RestoreApiService) InstantViVMRecoveryMountExecute(r ApiInstantViVMRecoveryMountRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RestoreApiService.InstantViVMRecoveryMount")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/restore/instantRecovery/vmware/vm/"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.instantViVMRecoverySpec == nil {
+		return localVarReturnValue, nil, reportError("instantViVMRecoverySpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.instantViVMRecoverySpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiInstantViVMRecoveryUnmountRequest struct {
+	ctx _context.Context
+	ApiService *RestoreApiService
+	xApiVersion *string
+	mountId string
+}
+
+func (r ApiInstantViVMRecoveryUnmountRequest) XApiVersion(xApiVersion string) ApiInstantViVMRecoveryUnmountRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiInstantViVMRecoveryUnmountRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.InstantViVMRecoveryUnmountExecute(r)
+}
+
+/*
+ * InstantViVMRecoveryUnmount Stop VM Publishing
+ * The HTTP POST request to the `/api/v1/restore/instantRecovery/vmware/vm/{mountId}/unmount` path allows you to stop publishing the recovered VMs and remove them from the datastore.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param mountId Mount ID.
+ * @return ApiInstantViVMRecoveryUnmountRequest
+ */
+func (a *RestoreApiService) InstantViVMRecoveryUnmount(ctx _context.Context, mountId string) ApiInstantViVMRecoveryUnmountRequest {
+	return ApiInstantViVMRecoveryUnmountRequest{
+		ApiService: a,
+		ctx: ctx,
+		mountId: mountId,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *RestoreApiService) InstantViVMRecoveryUnmountExecute(r ApiInstantViVMRecoveryUnmountRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RestoreApiService.InstantViVMRecoveryUnmount")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/restore/instantRecovery/vmware/vm/{mountId}/unmount"
+	localVarPath = strings.Replace(localVarPath, "{"+"mountId"+"}", _neturl.PathEscape(parameterToString(r.mountId, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {

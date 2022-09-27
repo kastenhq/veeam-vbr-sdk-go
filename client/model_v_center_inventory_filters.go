@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -27,7 +27,7 @@ type VCenterInventoryFilters struct {
 	// Filters objects by object ID.
 	ObjectIdFilter *string `json:"objectIdFilter,omitempty"`
 	HierarchyTypeFilter *EHierarchyType `json:"hierarchyTypeFilter,omitempty"`
-	// Filters objects by the `nameFilter` pattern. The pattern can match any object parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end.
+	// Filters objects by the `nameFilter` pattern. The pattern can match any object parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both.
 	NameFilter *string `json:"nameFilter,omitempty"`
 	TypeFilter *EVmwareInventoryType `json:"typeFilter,omitempty"`
 	// Filters objects by name of the parent container.

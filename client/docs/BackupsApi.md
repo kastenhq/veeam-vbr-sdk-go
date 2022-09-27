@@ -32,12 +32,12 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of backups to skip. (optional)
     limit := int32(56) // int32 | Maximum number of backups to return. (optional)
     orderColumn := openapiclient.EBackupsFiltersOrderColumn("Name") // EBackupsFiltersOrderColumn | Sorts backups by one of the backup parameters. (optional)
     orderAsc := true // bool | Sorts backups in the ascending order by the `orderColumn` parameter. (optional)
-    nameFilter := "nameFilter_example" // string | Filters backups by the `nameFilter` pattern. The pattern can match any backup parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. (optional)
+    nameFilter := "nameFilter_example" // string | Filters backups by the `nameFilter` pattern. The pattern can match any backup parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. (optional)
     createdAfterFilter := time.Now() // time.Time | Returns backups that are created after the specified date and time. (optional)
     createdBeforeFilter := time.Now() // time.Time | Returns backups that are created before the specified date and time. (optional)
     platformIdFilter := TODO // string | Filters backups by ID of the backup object platform. (optional)
@@ -67,12 +67,12 @@ Other parameters are passed through a pointer to a apiGetAllBackupsRequest struc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of backups to skip. | 
  **limit** | **int32** | Maximum number of backups to return. | 
  **orderColumn** | [**EBackupsFiltersOrderColumn**](EBackupsFiltersOrderColumn.md) | Sorts backups by one of the backup parameters. | 
  **orderAsc** | **bool** | Sorts backups in the ascending order by the &#x60;orderColumn&#x60; parameter. | 
- **nameFilter** | **string** | Filters backups by the &#x60;nameFilter&#x60; pattern. The pattern can match any backup parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. | 
+ **nameFilter** | **string** | Filters backups by the &#x60;nameFilter&#x60; pattern. The pattern can match any backup parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. | 
  **createdAfterFilter** | **time.Time** | Returns backups that are created after the specified date and time. | 
  **createdBeforeFilter** | **time.Time** | Returns backups that are created before the specified date and time. | 
  **platformIdFilter** | [**string**](string.md) | Filters backups by ID of the backup object platform. | 
@@ -118,7 +118,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup.
 
     configuration := openapiclient.NewConfiguration()
@@ -148,7 +148,7 @@ Other parameters are passed through a pointer to a apiGetBackupRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -190,7 +190,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup.
 
     configuration := openapiclient.NewConfiguration()
@@ -220,7 +220,7 @@ Other parameters are passed through a pointer to a apiGetBackupObjectsRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type

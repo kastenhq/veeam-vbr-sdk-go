@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -21,18 +21,17 @@ type PerformanceExtentModel struct {
 	Id string `json:"id"`
 	// Name of the backup repository added as a performance extent.
 	Name string `json:"name"`
-	Status ERepositoryExtentStatusType `json:"status"`
+	Status *ERepositoryExtentStatusType `json:"status,omitempty"`
 }
 
 // NewPerformanceExtentModel instantiates a new PerformanceExtentModel object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPerformanceExtentModel(id string, name string, status ERepositoryExtentStatusType, ) *PerformanceExtentModel {
+func NewPerformanceExtentModel(id string, name string, ) *PerformanceExtentModel {
 	this := PerformanceExtentModel{}
 	this.Id = id
 	this.Name = name
-	this.Status = status
 	return &this
 }
 
@@ -92,28 +91,36 @@ func (o *PerformanceExtentModel) SetName(v string) {
 	o.Name = v
 }
 
-// GetStatus returns the Status field value
+// GetStatus returns the Status field value if set, zero value otherwise.
 func (o *PerformanceExtentModel) GetStatus() ERepositoryExtentStatusType {
-	if o == nil  {
+	if o == nil || o.Status == nil {
 		var ret ERepositoryExtentStatusType
 		return ret
 	}
-
-	return o.Status
+	return *o.Status
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PerformanceExtentModel) GetStatusOk() (*ERepositoryExtentStatusType, bool) {
-	if o == nil  {
+	if o == nil || o.Status == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return o.Status, true
 }
 
-// SetStatus sets field value
+// HasStatus returns a boolean if a field has been set.
+func (o *PerformanceExtentModel) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given ERepositoryExtentStatusType and assigns it to the Status field.
 func (o *PerformanceExtentModel) SetStatus(v ERepositoryExtentStatusType) {
-	o.Status = v
+	o.Status = &v
 }
 
 func (o PerformanceExtentModel) MarshalJSON() ([]byte, error) {
@@ -124,7 +131,7 @@ func (o PerformanceExtentModel) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["name"] = o.Name
 	}
-	if true {
+	if o.Status != nil {
 		toSerialize["status"] = o.Status
 	}
 	return json.Marshal(toSerialize)

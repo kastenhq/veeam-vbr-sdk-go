@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -21,7 +21,6 @@ type ECompressionLevel string
 
 // List of ECompressionLevel
 const (
-	ECOMPRESSIONLEVEL_AUTO ECompressionLevel = "Auto"
 	ECOMPRESSIONLEVEL_NONE ECompressionLevel = "None"
 	ECOMPRESSIONLEVEL_DEDUP_FRIENDLY ECompressionLevel = "DedupFriendly"
 	ECOMPRESSIONLEVEL_OPTIMAL ECompressionLevel = "Optimal"
@@ -36,7 +35,7 @@ func (v *ECompressionLevel) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ECompressionLevel(value)
-	for _, existing := range []ECompressionLevel{ "Auto", "None", "DedupFriendly", "Optimal", "High", "Extreme",   } {
+	for _, existing := range []ECompressionLevel{ "None", "DedupFriendly", "Optimal", "High", "Extreme",   } {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil

@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -25,6 +25,20 @@ type RepositoryImportSpecCollection struct {
 	SmbRepositories *[]SmbStorageImportSpec `json:"SmbRepositories,omitempty"`
 	// Array of network attached storages.
 	NfsRepositories *[]NfsStorageImportSpec `json:"NfsRepositories,omitempty"`
+	// Array of network attached storages.
+	AzureBlobStorages *[]AzureBlobStorageImportSpec `json:"AzureBlobStorages,omitempty"`
+	// Array of network attached storages.
+	AzureDataBoxStorages *[]AzureDataBoxStorageImportSpec `json:"AzureDataBoxStorages,omitempty"`
+	// Array of network attached storages.
+	AmazonS3Storages *[]AmazonS3StorageImportSpec `json:"AmazonS3Storages,omitempty"`
+	// Array of network attached storages.
+	AmazonSnowballEdgeStorages *[]AmazonSnowballEdgeStorageImportSpec `json:"AmazonSnowballEdgeStorages,omitempty"`
+	// Array of network attached storages.
+	S3CompatibleStorages *[]S3CompatibleStorageImportSpec `json:"S3CompatibleStorages,omitempty"`
+	// Array of network attached storages.
+	GoogleCloudStorages *[]GoogleCloudStorageImportSpec `json:"GoogleCloudStorages,omitempty"`
+	// Array of network attached storages.
+	IBMCloudStorages *[]IBMCloudStorageImportSpec `json:"IBMCloudStorages,omitempty"`
 }
 
 // NewRepositoryImportSpecCollection instantiates a new RepositoryImportSpecCollection object
@@ -172,6 +186,230 @@ func (o *RepositoryImportSpecCollection) SetNfsRepositories(v []NfsStorageImport
 	o.NfsRepositories = &v
 }
 
+// GetAzureBlobStorages returns the AzureBlobStorages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetAzureBlobStorages() []AzureBlobStorageImportSpec {
+	if o == nil || o.AzureBlobStorages == nil {
+		var ret []AzureBlobStorageImportSpec
+		return ret
+	}
+	return *o.AzureBlobStorages
+}
+
+// GetAzureBlobStoragesOk returns a tuple with the AzureBlobStorages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetAzureBlobStoragesOk() (*[]AzureBlobStorageImportSpec, bool) {
+	if o == nil || o.AzureBlobStorages == nil {
+		return nil, false
+	}
+	return o.AzureBlobStorages, true
+}
+
+// HasAzureBlobStorages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasAzureBlobStorages() bool {
+	if o != nil && o.AzureBlobStorages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAzureBlobStorages gets a reference to the given []AzureBlobStorageImportSpec and assigns it to the AzureBlobStorages field.
+func (o *RepositoryImportSpecCollection) SetAzureBlobStorages(v []AzureBlobStorageImportSpec) {
+	o.AzureBlobStorages = &v
+}
+
+// GetAzureDataBoxStorages returns the AzureDataBoxStorages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetAzureDataBoxStorages() []AzureDataBoxStorageImportSpec {
+	if o == nil || o.AzureDataBoxStorages == nil {
+		var ret []AzureDataBoxStorageImportSpec
+		return ret
+	}
+	return *o.AzureDataBoxStorages
+}
+
+// GetAzureDataBoxStoragesOk returns a tuple with the AzureDataBoxStorages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetAzureDataBoxStoragesOk() (*[]AzureDataBoxStorageImportSpec, bool) {
+	if o == nil || o.AzureDataBoxStorages == nil {
+		return nil, false
+	}
+	return o.AzureDataBoxStorages, true
+}
+
+// HasAzureDataBoxStorages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasAzureDataBoxStorages() bool {
+	if o != nil && o.AzureDataBoxStorages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAzureDataBoxStorages gets a reference to the given []AzureDataBoxStorageImportSpec and assigns it to the AzureDataBoxStorages field.
+func (o *RepositoryImportSpecCollection) SetAzureDataBoxStorages(v []AzureDataBoxStorageImportSpec) {
+	o.AzureDataBoxStorages = &v
+}
+
+// GetAmazonS3Storages returns the AmazonS3Storages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetAmazonS3Storages() []AmazonS3StorageImportSpec {
+	if o == nil || o.AmazonS3Storages == nil {
+		var ret []AmazonS3StorageImportSpec
+		return ret
+	}
+	return *o.AmazonS3Storages
+}
+
+// GetAmazonS3StoragesOk returns a tuple with the AmazonS3Storages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetAmazonS3StoragesOk() (*[]AmazonS3StorageImportSpec, bool) {
+	if o == nil || o.AmazonS3Storages == nil {
+		return nil, false
+	}
+	return o.AmazonS3Storages, true
+}
+
+// HasAmazonS3Storages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasAmazonS3Storages() bool {
+	if o != nil && o.AmazonS3Storages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAmazonS3Storages gets a reference to the given []AmazonS3StorageImportSpec and assigns it to the AmazonS3Storages field.
+func (o *RepositoryImportSpecCollection) SetAmazonS3Storages(v []AmazonS3StorageImportSpec) {
+	o.AmazonS3Storages = &v
+}
+
+// GetAmazonSnowballEdgeStorages returns the AmazonSnowballEdgeStorages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetAmazonSnowballEdgeStorages() []AmazonSnowballEdgeStorageImportSpec {
+	if o == nil || o.AmazonSnowballEdgeStorages == nil {
+		var ret []AmazonSnowballEdgeStorageImportSpec
+		return ret
+	}
+	return *o.AmazonSnowballEdgeStorages
+}
+
+// GetAmazonSnowballEdgeStoragesOk returns a tuple with the AmazonSnowballEdgeStorages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetAmazonSnowballEdgeStoragesOk() (*[]AmazonSnowballEdgeStorageImportSpec, bool) {
+	if o == nil || o.AmazonSnowballEdgeStorages == nil {
+		return nil, false
+	}
+	return o.AmazonSnowballEdgeStorages, true
+}
+
+// HasAmazonSnowballEdgeStorages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasAmazonSnowballEdgeStorages() bool {
+	if o != nil && o.AmazonSnowballEdgeStorages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAmazonSnowballEdgeStorages gets a reference to the given []AmazonSnowballEdgeStorageImportSpec and assigns it to the AmazonSnowballEdgeStorages field.
+func (o *RepositoryImportSpecCollection) SetAmazonSnowballEdgeStorages(v []AmazonSnowballEdgeStorageImportSpec) {
+	o.AmazonSnowballEdgeStorages = &v
+}
+
+// GetS3CompatibleStorages returns the S3CompatibleStorages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetS3CompatibleStorages() []S3CompatibleStorageImportSpec {
+	if o == nil || o.S3CompatibleStorages == nil {
+		var ret []S3CompatibleStorageImportSpec
+		return ret
+	}
+	return *o.S3CompatibleStorages
+}
+
+// GetS3CompatibleStoragesOk returns a tuple with the S3CompatibleStorages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetS3CompatibleStoragesOk() (*[]S3CompatibleStorageImportSpec, bool) {
+	if o == nil || o.S3CompatibleStorages == nil {
+		return nil, false
+	}
+	return o.S3CompatibleStorages, true
+}
+
+// HasS3CompatibleStorages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasS3CompatibleStorages() bool {
+	if o != nil && o.S3CompatibleStorages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetS3CompatibleStorages gets a reference to the given []S3CompatibleStorageImportSpec and assigns it to the S3CompatibleStorages field.
+func (o *RepositoryImportSpecCollection) SetS3CompatibleStorages(v []S3CompatibleStorageImportSpec) {
+	o.S3CompatibleStorages = &v
+}
+
+// GetGoogleCloudStorages returns the GoogleCloudStorages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetGoogleCloudStorages() []GoogleCloudStorageImportSpec {
+	if o == nil || o.GoogleCloudStorages == nil {
+		var ret []GoogleCloudStorageImportSpec
+		return ret
+	}
+	return *o.GoogleCloudStorages
+}
+
+// GetGoogleCloudStoragesOk returns a tuple with the GoogleCloudStorages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetGoogleCloudStoragesOk() (*[]GoogleCloudStorageImportSpec, bool) {
+	if o == nil || o.GoogleCloudStorages == nil {
+		return nil, false
+	}
+	return o.GoogleCloudStorages, true
+}
+
+// HasGoogleCloudStorages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasGoogleCloudStorages() bool {
+	if o != nil && o.GoogleCloudStorages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetGoogleCloudStorages gets a reference to the given []GoogleCloudStorageImportSpec and assigns it to the GoogleCloudStorages field.
+func (o *RepositoryImportSpecCollection) SetGoogleCloudStorages(v []GoogleCloudStorageImportSpec) {
+	o.GoogleCloudStorages = &v
+}
+
+// GetIBMCloudStorages returns the IBMCloudStorages field value if set, zero value otherwise.
+func (o *RepositoryImportSpecCollection) GetIBMCloudStorages() []IBMCloudStorageImportSpec {
+	if o == nil || o.IBMCloudStorages == nil {
+		var ret []IBMCloudStorageImportSpec
+		return ret
+	}
+	return *o.IBMCloudStorages
+}
+
+// GetIBMCloudStoragesOk returns a tuple with the IBMCloudStorages field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RepositoryImportSpecCollection) GetIBMCloudStoragesOk() (*[]IBMCloudStorageImportSpec, bool) {
+	if o == nil || o.IBMCloudStorages == nil {
+		return nil, false
+	}
+	return o.IBMCloudStorages, true
+}
+
+// HasIBMCloudStorages returns a boolean if a field has been set.
+func (o *RepositoryImportSpecCollection) HasIBMCloudStorages() bool {
+	if o != nil && o.IBMCloudStorages != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIBMCloudStorages gets a reference to the given []IBMCloudStorageImportSpec and assigns it to the IBMCloudStorages field.
+func (o *RepositoryImportSpecCollection) SetIBMCloudStorages(v []IBMCloudStorageImportSpec) {
+	o.IBMCloudStorages = &v
+}
+
 func (o RepositoryImportSpecCollection) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if o.WindowsLocalRepositories != nil {
@@ -185,6 +423,27 @@ func (o RepositoryImportSpecCollection) MarshalJSON() ([]byte, error) {
 	}
 	if o.NfsRepositories != nil {
 		toSerialize["NfsRepositories"] = o.NfsRepositories
+	}
+	if o.AzureBlobStorages != nil {
+		toSerialize["AzureBlobStorages"] = o.AzureBlobStorages
+	}
+	if o.AzureDataBoxStorages != nil {
+		toSerialize["AzureDataBoxStorages"] = o.AzureDataBoxStorages
+	}
+	if o.AmazonS3Storages != nil {
+		toSerialize["AmazonS3Storages"] = o.AmazonS3Storages
+	}
+	if o.AmazonSnowballEdgeStorages != nil {
+		toSerialize["AmazonSnowballEdgeStorages"] = o.AmazonSnowballEdgeStorages
+	}
+	if o.S3CompatibleStorages != nil {
+		toSerialize["S3CompatibleStorages"] = o.S3CompatibleStorages
+	}
+	if o.GoogleCloudStorages != nil {
+		toSerialize["GoogleCloudStorages"] = o.GoogleCloudStorages
+	}
+	if o.IBMCloudStorages != nil {
+		toSerialize["IBMCloudStorages"] = o.IBMCloudStorages
 	}
 	return json.Marshal(toSerialize)
 }

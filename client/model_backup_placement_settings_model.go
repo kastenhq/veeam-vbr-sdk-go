@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -17,8 +17,8 @@ import (
 
 // BackupPlacementSettingsModel Settings of the performance placement policy.
 type BackupPlacementSettingsModel struct {
-	// Name of a performance extent.
-	ExtentName string `json:"extentName"`
+	// Id of a performance extent.
+	ExtentId string `json:"extentId"`
 	AllowedBackups EAllowedBackupsType `json:"allowedBackups"`
 }
 
@@ -26,9 +26,9 @@ type BackupPlacementSettingsModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBackupPlacementSettingsModel(extentName string, allowedBackups EAllowedBackupsType, ) *BackupPlacementSettingsModel {
+func NewBackupPlacementSettingsModel(extentId string, allowedBackups EAllowedBackupsType, ) *BackupPlacementSettingsModel {
 	this := BackupPlacementSettingsModel{}
-	this.ExtentName = extentName
+	this.ExtentId = extentId
 	this.AllowedBackups = allowedBackups
 	return &this
 }
@@ -41,28 +41,28 @@ func NewBackupPlacementSettingsModelWithDefaults() *BackupPlacementSettingsModel
 	return &this
 }
 
-// GetExtentName returns the ExtentName field value
-func (o *BackupPlacementSettingsModel) GetExtentName() string {
+// GetExtentId returns the ExtentId field value
+func (o *BackupPlacementSettingsModel) GetExtentId() string {
 	if o == nil  {
 		var ret string
 		return ret
 	}
 
-	return o.ExtentName
+	return o.ExtentId
 }
 
-// GetExtentNameOk returns a tuple with the ExtentName field value
+// GetExtentIdOk returns a tuple with the ExtentId field value
 // and a boolean to check if the value has been set.
-func (o *BackupPlacementSettingsModel) GetExtentNameOk() (*string, bool) {
+func (o *BackupPlacementSettingsModel) GetExtentIdOk() (*string, bool) {
 	if o == nil  {
 		return nil, false
 	}
-	return &o.ExtentName, true
+	return &o.ExtentId, true
 }
 
-// SetExtentName sets field value
-func (o *BackupPlacementSettingsModel) SetExtentName(v string) {
-	o.ExtentName = v
+// SetExtentId sets field value
+func (o *BackupPlacementSettingsModel) SetExtentId(v string) {
+	o.ExtentId = v
 }
 
 // GetAllowedBackups returns the AllowedBackups field value
@@ -92,7 +92,7 @@ func (o *BackupPlacementSettingsModel) SetAllowedBackups(v EAllowedBackupsType) 
 func (o BackupPlacementSettingsModel) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
-		toSerialize["extentName"] = o.ExtentName
+		toSerialize["extentId"] = o.ExtentId
 	}
 	if true {
 		toSerialize["allowedBackups"] = o.AllowedBackups

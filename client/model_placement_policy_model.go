@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -18,17 +18,17 @@ import (
 // PlacementPolicyModel Backup file placement policy.
 type PlacementPolicyModel struct {
 	Type EPlacementPolicyType `json:"type"`
-	Settings []BackupPlacementSettingsModel `json:"settings"`
+	Settings *[]BackupPlacementSettingsModel `json:"settings,omitempty"`
+	EnforceStrictPlacementPolicy *bool `json:"enforceStrictPlacementPolicy,omitempty"`
 }
 
 // NewPlacementPolicyModel instantiates a new PlacementPolicyModel object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPlacementPolicyModel(type_ EPlacementPolicyType, settings []BackupPlacementSettingsModel, ) *PlacementPolicyModel {
+func NewPlacementPolicyModel(type_ EPlacementPolicyType, ) *PlacementPolicyModel {
 	this := PlacementPolicyModel{}
 	this.Type = type_
-	this.Settings = settings
 	return &this
 }
 
@@ -64,28 +64,68 @@ func (o *PlacementPolicyModel) SetType(v EPlacementPolicyType) {
 	o.Type = v
 }
 
-// GetSettings returns the Settings field value
+// GetSettings returns the Settings field value if set, zero value otherwise.
 func (o *PlacementPolicyModel) GetSettings() []BackupPlacementSettingsModel {
-	if o == nil  {
+	if o == nil || o.Settings == nil {
 		var ret []BackupPlacementSettingsModel
 		return ret
 	}
-
-	return o.Settings
+	return *o.Settings
 }
 
-// GetSettingsOk returns a tuple with the Settings field value
+// GetSettingsOk returns a tuple with the Settings field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PlacementPolicyModel) GetSettingsOk() (*[]BackupPlacementSettingsModel, bool) {
-	if o == nil  {
+	if o == nil || o.Settings == nil {
 		return nil, false
 	}
-	return &o.Settings, true
+	return o.Settings, true
 }
 
-// SetSettings sets field value
+// HasSettings returns a boolean if a field has been set.
+func (o *PlacementPolicyModel) HasSettings() bool {
+	if o != nil && o.Settings != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSettings gets a reference to the given []BackupPlacementSettingsModel and assigns it to the Settings field.
 func (o *PlacementPolicyModel) SetSettings(v []BackupPlacementSettingsModel) {
-	o.Settings = v
+	o.Settings = &v
+}
+
+// GetEnforceStrictPlacementPolicy returns the EnforceStrictPlacementPolicy field value if set, zero value otherwise.
+func (o *PlacementPolicyModel) GetEnforceStrictPlacementPolicy() bool {
+	if o == nil || o.EnforceStrictPlacementPolicy == nil {
+		var ret bool
+		return ret
+	}
+	return *o.EnforceStrictPlacementPolicy
+}
+
+// GetEnforceStrictPlacementPolicyOk returns a tuple with the EnforceStrictPlacementPolicy field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PlacementPolicyModel) GetEnforceStrictPlacementPolicyOk() (*bool, bool) {
+	if o == nil || o.EnforceStrictPlacementPolicy == nil {
+		return nil, false
+	}
+	return o.EnforceStrictPlacementPolicy, true
+}
+
+// HasEnforceStrictPlacementPolicy returns a boolean if a field has been set.
+func (o *PlacementPolicyModel) HasEnforceStrictPlacementPolicy() bool {
+	if o != nil && o.EnforceStrictPlacementPolicy != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnforceStrictPlacementPolicy gets a reference to the given bool and assigns it to the EnforceStrictPlacementPolicy field.
+func (o *PlacementPolicyModel) SetEnforceStrictPlacementPolicy(v bool) {
+	o.EnforceStrictPlacementPolicy = &v
 }
 
 func (o PlacementPolicyModel) MarshalJSON() ([]byte, error) {
@@ -93,8 +133,11 @@ func (o PlacementPolicyModel) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["type"] = o.Type
 	}
-	if true {
+	if o.Settings != nil {
 		toSerialize["settings"] = o.Settings
+	}
+	if o.EnforceStrictPlacementPolicy != nil {
+		toSerialize["enforceStrictPlacementPolicy"] = o.EnforceStrictPlacementPolicy
 	}
 	return json.Marshal(toSerialize)
 }

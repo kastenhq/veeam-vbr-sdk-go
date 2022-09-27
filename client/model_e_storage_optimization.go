@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -21,7 +21,6 @@ type EStorageOptimization string
 
 // List of EStorageOptimization
 const (
-	ESTORAGEOPTIMIZATION_AUTO EStorageOptimization = "Auto"
 	ESTORAGEOPTIMIZATION_LOCAL_TARGET_LARGE EStorageOptimization = "LocalTargetLarge"
 	ESTORAGEOPTIMIZATION_LOCAL_TARGET EStorageOptimization = "LocalTarget"
 	ESTORAGEOPTIMIZATION_LAN_TARGET EStorageOptimization = "LANTarget"
@@ -37,7 +36,7 @@ func (v *EStorageOptimization) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := EStorageOptimization(value)
-	for _, existing := range []EStorageOptimization{ "Auto", "LocalTargetLarge", "LocalTarget", "LANTarget", "WANTarget", "LocalTargetLarge8192", "LocalTargetLarge4096",   } {
+	for _, existing := range []EStorageOptimization{ "LocalTargetLarge", "LocalTarget", "LANTarget", "WANTarget", "LocalTargetLarge8192", "LocalTargetLarge4096",   } {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil

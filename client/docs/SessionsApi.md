@@ -33,12 +33,12 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of sessions to skip. (optional)
     limit := int32(56) // int32 | Maximum number of sessions to return. (optional)
     orderColumn := openapiclient.ESessionsFiltersOrderColumn("Name") // ESessionsFiltersOrderColumn | Sorts sessions by one of the session parameters. (optional)
     orderAsc := true // bool | Sorts sessions in the ascending order by the `orderColumn` parameter. (optional)
-    nameFilter := "nameFilter_example" // string | Filters sessions by the `nameFilter` pattern. The pattern can match any session parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. (optional)
+    nameFilter := "nameFilter_example" // string | Filters sessions by the `nameFilter` pattern. The pattern can match any session parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. (optional)
     createdAfterFilter := time.Now() // time.Time | Returns sessions that are created after the specified date and time. (optional)
     createdBeforeFilter := time.Now() // time.Time | Returns sessions that are created before the specified date and time. (optional)
     endedAfterFilter := time.Now() // time.Time | Returns sessions that are finished after the specified date and time. (optional)
@@ -71,12 +71,12 @@ Other parameters are passed through a pointer to a apiGetAllSessionsRequest stru
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of sessions to skip. | 
  **limit** | **int32** | Maximum number of sessions to return. | 
  **orderColumn** | [**ESessionsFiltersOrderColumn**](ESessionsFiltersOrderColumn.md) | Sorts sessions by one of the session parameters. | 
  **orderAsc** | **bool** | Sorts sessions in the ascending order by the &#x60;orderColumn&#x60; parameter. | 
- **nameFilter** | **string** | Filters sessions by the &#x60;nameFilter&#x60; pattern. The pattern can match any session parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. | 
+ **nameFilter** | **string** | Filters sessions by the &#x60;nameFilter&#x60; pattern. The pattern can match any session parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. | 
  **createdAfterFilter** | **time.Time** | Returns sessions that are created after the specified date and time. | 
  **createdBeforeFilter** | **time.Time** | Returns sessions that are created before the specified date and time. | 
  **endedAfterFilter** | **time.Time** | Returns sessions that are finished after the specified date and time. | 
@@ -126,7 +126,7 @@ import (
 
 func main() {
     id := TODO // string | ID of the session.
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
 
     configuration := openapiclient.NewConfiguration()
     api_client := openapiclient.NewAPIClient(configuration)
@@ -156,7 +156,7 @@ Other parameters are passed through a pointer to a apiGetSessionRequest struct v
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 ### Return type
 
@@ -198,7 +198,7 @@ import (
 
 func main() {
     id := TODO // string | ID of the session.
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
 
     configuration := openapiclient.NewConfiguration()
     api_client := openapiclient.NewAPIClient(configuration)
@@ -228,7 +228,7 @@ Other parameters are passed through a pointer to a apiGetSessionLogsRequest stru
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 ### Return type
 
@@ -270,7 +270,7 @@ import (
 
 func main() {
     id := TODO // string | ID of the session.
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
 
     configuration := openapiclient.NewConfiguration()
     api_client := openapiclient.NewAPIClient(configuration)
@@ -300,7 +300,7 @@ Other parameters are passed through a pointer to a apiStopSessionRequest struct 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 ### Return type
 

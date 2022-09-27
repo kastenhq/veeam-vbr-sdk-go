@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -17,9 +17,9 @@ import (
 
 // ViBackupObjectModelAllOf struct for ViBackupObjectModelAllOf
 type ViBackupObjectModelAllOf struct {
-	// ID of the virtual infrastructure object: mo-ref or ID, depending on the virtualization platform. 
+	// ID of the virtual infrastructure object (mo-ref or ID, depending on the virtualization platform).
 	ObjectId string `json:"objectId"`
-	ViType EVmwareInventoryType `json:"viType"`
+	ViType *EVmwareInventoryType `json:"viType,omitempty"`
 	// Path to the object.
 	Path *string `json:"path,omitempty"`
 }
@@ -28,10 +28,9 @@ type ViBackupObjectModelAllOf struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewViBackupObjectModelAllOf(objectId string, viType EVmwareInventoryType, ) *ViBackupObjectModelAllOf {
+func NewViBackupObjectModelAllOf(objectId string, ) *ViBackupObjectModelAllOf {
 	this := ViBackupObjectModelAllOf{}
 	this.ObjectId = objectId
-	this.ViType = viType
 	return &this
 }
 
@@ -67,28 +66,36 @@ func (o *ViBackupObjectModelAllOf) SetObjectId(v string) {
 	o.ObjectId = v
 }
 
-// GetViType returns the ViType field value
+// GetViType returns the ViType field value if set, zero value otherwise.
 func (o *ViBackupObjectModelAllOf) GetViType() EVmwareInventoryType {
-	if o == nil  {
+	if o == nil || o.ViType == nil {
 		var ret EVmwareInventoryType
 		return ret
 	}
-
-	return o.ViType
+	return *o.ViType
 }
 
-// GetViTypeOk returns a tuple with the ViType field value
+// GetViTypeOk returns a tuple with the ViType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ViBackupObjectModelAllOf) GetViTypeOk() (*EVmwareInventoryType, bool) {
-	if o == nil  {
+	if o == nil || o.ViType == nil {
 		return nil, false
 	}
-	return &o.ViType, true
+	return o.ViType, true
 }
 
-// SetViType sets field value
+// HasViType returns a boolean if a field has been set.
+func (o *ViBackupObjectModelAllOf) HasViType() bool {
+	if o != nil && o.ViType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetViType gets a reference to the given EVmwareInventoryType and assigns it to the ViType field.
 func (o *ViBackupObjectModelAllOf) SetViType(v EVmwareInventoryType) {
-	o.ViType = v
+	o.ViType = &v
 }
 
 // GetPath returns the Path field value if set, zero value otherwise.
@@ -128,7 +135,7 @@ func (o ViBackupObjectModelAllOf) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["objectId"] = o.ObjectId
 	}
-	if true {
+	if o.ViType != nil {
 		toSerialize["viType"] = o.ViType
 	}
 	if o.Path != nil {

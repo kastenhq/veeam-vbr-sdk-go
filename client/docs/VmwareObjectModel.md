@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**HostName** | **string** | Name of the host. | 
+**HostName** | **string** | Name of the VMware vSphere server that hosts the object. | 
 **Name** | **string** | Name of the VMware vSphere object. | 
 **Type** | [**EVmwareInventoryType**](EVmwareInventoryType.md) |  | 
 **ObjectId** | Pointer to **string** | ID of the VMware vSphere object. | [optional] 

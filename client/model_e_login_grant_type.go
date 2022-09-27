@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -16,7 +16,7 @@ import (
 	"fmt"
 )
 
-// ELoginGrantType Authorization grant type.  Available values: - `password` — used to obtain an access token by providing a user name and password. - `refresh_token` — used to refresh an expired or lost access token by providing a refresh token. - `authorization_code` — used to obtain an access token by providing an authorization code. 
+// ELoginGrantType Authorization grant type.<br>Available values:<ul> <li>`password` — used to obtain an access token by providing a user name and password.</li> <li>`refresh_token` — used to refresh an expired or lost access token by providing a refresh token.</li> <li>`authorization_code` — used to obtain an access token by providing an authorization code.</li></ul>
 type ELoginGrantType string
 
 // List of ELoginGrantType
@@ -24,6 +24,7 @@ const (
 	ELOGINGRANTTYPE_PASSWORD ELoginGrantType = "password"
 	ELOGINGRANTTYPE_REFRESH_TOKEN ELoginGrantType = "refresh_token"
 	ELOGINGRANTTYPE_AUTHORIZATION_CODE ELoginGrantType = "authorization_code"
+	ELOGINGRANTTYPE_VBR_TOKEN ELoginGrantType = "vbr_token"
 )
 
 func (v *ELoginGrantType) UnmarshalJSON(src []byte) error {
@@ -33,7 +34,7 @@ func (v *ELoginGrantType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ELoginGrantType(value)
-	for _, existing := range []ELoginGrantType{ "password", "refresh_token", "authorization_code",   } {
+	for _, existing := range []ELoginGrantType{ "password", "refresh_token", "authorization_code", "vbr_token",   } {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil

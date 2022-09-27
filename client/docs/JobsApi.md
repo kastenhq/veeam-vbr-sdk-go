@@ -38,7 +38,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     jobSpec := *openapiclient.NewJobSpec("Name_example", "Description_example", openapiclient.EJobType("Backup")) // JobSpec | 
 
     configuration := openapiclient.NewConfiguration()
@@ -64,7 +64,7 @@ Other parameters are passed through a pointer to a apiCreateJobRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **jobSpec** | [**JobSpec**](JobSpec.md) |  | 
 
 ### Return type
@@ -106,7 +106,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
 
     configuration := openapiclient.NewConfiguration()
@@ -136,7 +136,7 @@ Other parameters are passed through a pointer to a apiDeleteJobRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -178,7 +178,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
 
     configuration := openapiclient.NewConfiguration()
@@ -208,7 +208,7 @@ Other parameters are passed through a pointer to a apiDisableJobRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -250,7 +250,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
 
     configuration := openapiclient.NewConfiguration()
@@ -280,7 +280,7 @@ Other parameters are passed through a pointer to a apiEnableJobRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -322,12 +322,12 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of jobs to skip. (optional)
     limit := int32(56) // int32 | Maximum number of jobs to return. (optional)
     orderColumn := openapiclient.EJobFiltersOrderColumn("Name") // EJobFiltersOrderColumn | Sorts jobs by one of the job parameters. (optional)
     orderAsc := true // bool | Sorts jobs in the ascending order by the `orderColumn` parameter. (optional)
-    nameFilter := "nameFilter_example" // string | Filters jobs by the `nameFilter` pattern. The pattern can match any job parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. (optional)
+    nameFilter := "nameFilter_example" // string | Filters jobs by the `nameFilter` pattern. The pattern can match any job parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. (optional)
     typeFilter := openapiclient.EJobType("Backup") // EJobType | Filters jobs by job type. (optional)
 
     configuration := openapiclient.NewConfiguration()
@@ -353,12 +353,12 @@ Other parameters are passed through a pointer to a apiGetAllJobsRequest struct v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of jobs to skip. | 
  **limit** | **int32** | Maximum number of jobs to return. | 
  **orderColumn** | [**EJobFiltersOrderColumn**](EJobFiltersOrderColumn.md) | Sorts jobs by one of the job parameters. | 
  **orderAsc** | **bool** | Sorts jobs in the ascending order by the &#x60;orderColumn&#x60; parameter. | 
- **nameFilter** | **string** | Filters jobs by the &#x60;nameFilter&#x60; pattern. The pattern can match any job parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. | 
+ **nameFilter** | **string** | Filters jobs by the &#x60;nameFilter&#x60; pattern. The pattern can match any job parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. | 
  **typeFilter** | [**EJobType**](EJobType.md) | Filters jobs by job type. | 
 
 ### Return type
@@ -401,13 +401,13 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of job states to skip. (optional)
     limit := int32(56) // int32 | Maximum number of job states to return. (optional)
     orderColumn := openapiclient.EJobStatesFiltersOrderColumn("Name") // EJobStatesFiltersOrderColumn | Sorts job states by one of the state parameters. (optional)
     orderAsc := true // bool | Sorts job states in the ascending order by the `orderColumn` parameter. (optional)
     idFilter := TODO // string | Filters job states by job ID. (optional)
-    nameFilter := "nameFilter_example" // string | Filters job states by the `nameFilter` pattern. The pattern can match any state parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. (optional)
+    nameFilter := "nameFilter_example" // string | Filters job states by the `nameFilter` pattern. The pattern can match any state parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. (optional)
     typeFilter := openapiclient.EJobType("Backup") // EJobType | Filters job states by job type. (optional)
     lastResultFilter := openapiclient.ESessionResult("None") // ESessionResult | Filters job states by status with which jobs must finish. (optional)
     statusFilter := openapiclient.EJobStatus("running") // EJobStatus | Filters job states by current status of the job. (optional)
@@ -441,13 +441,13 @@ Other parameters are passed through a pointer to a apiGetAllJobsStatesRequest st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of job states to skip. | 
  **limit** | **int32** | Maximum number of job states to return. | 
  **orderColumn** | [**EJobStatesFiltersOrderColumn**](EJobStatesFiltersOrderColumn.md) | Sorts job states by one of the state parameters. | 
  **orderAsc** | **bool** | Sorts job states in the ascending order by the &#x60;orderColumn&#x60; parameter. | 
  **idFilter** | [**string**](string.md) | Filters job states by job ID. | 
- **nameFilter** | **string** | Filters job states by the &#x60;nameFilter&#x60; pattern. The pattern can match any state parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. | 
+ **nameFilter** | **string** | Filters job states by the &#x60;nameFilter&#x60; pattern. The pattern can match any state parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. | 
  **typeFilter** | [**EJobType**](EJobType.md) | Filters job states by job type. | 
  **lastResultFilter** | [**ESessionResult**](ESessionResult.md) | Filters job states by status with which jobs must finish. | 
  **statusFilter** | [**EJobStatus**](EJobStatus.md) | Filters job states by current status of the job. | 
@@ -497,7 +497,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
 
     configuration := openapiclient.NewConfiguration()
@@ -527,7 +527,7 @@ Other parameters are passed through a pointer to a apiGetJobRequest struct via t
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -569,7 +569,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
     jobStartSpec := *openapiclient.NewJobStartSpec(false) // JobStartSpec |  (optional)
 
@@ -600,7 +600,7 @@ Other parameters are passed through a pointer to a apiStartJobRequest struct via
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **jobStartSpec** | [**JobStartSpec**](JobStartSpec.md) |  | 
 
@@ -643,7 +643,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
     jobStopSpec := *openapiclient.NewJobStopSpec(false) // JobStopSpec |  (optional)
 
@@ -674,7 +674,7 @@ Other parameters are passed through a pointer to a apiStopJobRequest struct via 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **jobStopSpec** | [**JobStopSpec**](JobStopSpec.md) |  | 
 
@@ -717,7 +717,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | 
     jobModel := *openapiclient.NewJobModel("Id_example", "Name_example", "Description_example", openapiclient.EJobType("Backup"), false) // JobModel | 
 
@@ -748,7 +748,7 @@ Other parameters are passed through a pointer to a apiUpdateJobRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **jobModel** | [**JobModel**](JobModel.md) |  | 
 

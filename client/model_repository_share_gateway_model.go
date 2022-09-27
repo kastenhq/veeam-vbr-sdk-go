@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -18,17 +18,18 @@ import (
 // RepositoryShareGatewayModel Settings for the gateway server.
 type RepositoryShareGatewayModel struct {
 	// If *true*, Veeam Backup & Replication automatically selects a gateway server.
-	AutoSelect *bool `json:"autoSelect,omitempty"`
-	// ID of the gateway server.
-	GatewayServerId *string `json:"gatewayServerId,omitempty"`
+	AutoSelect bool `json:"autoSelect"`
+	// Set of the gateway servers ids.
+	GatewayServerIds *[]string `json:"gatewayServerIds,omitempty"`
 }
 
 // NewRepositoryShareGatewayModel instantiates a new RepositoryShareGatewayModel object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRepositoryShareGatewayModel() *RepositoryShareGatewayModel {
+func NewRepositoryShareGatewayModel(autoSelect bool, ) *RepositoryShareGatewayModel {
 	this := RepositoryShareGatewayModel{}
+	this.AutoSelect = autoSelect
 	return &this
 }
 
@@ -40,77 +41,69 @@ func NewRepositoryShareGatewayModelWithDefaults() *RepositoryShareGatewayModel {
 	return &this
 }
 
-// GetAutoSelect returns the AutoSelect field value if set, zero value otherwise.
+// GetAutoSelect returns the AutoSelect field value
 func (o *RepositoryShareGatewayModel) GetAutoSelect() bool {
-	if o == nil || o.AutoSelect == nil {
+	if o == nil  {
 		var ret bool
 		return ret
 	}
-	return *o.AutoSelect
+
+	return o.AutoSelect
 }
 
-// GetAutoSelectOk returns a tuple with the AutoSelect field value if set, nil otherwise
+// GetAutoSelectOk returns a tuple with the AutoSelect field value
 // and a boolean to check if the value has been set.
 func (o *RepositoryShareGatewayModel) GetAutoSelectOk() (*bool, bool) {
-	if o == nil || o.AutoSelect == nil {
+	if o == nil  {
 		return nil, false
 	}
-	return o.AutoSelect, true
+	return &o.AutoSelect, true
 }
 
-// HasAutoSelect returns a boolean if a field has been set.
-func (o *RepositoryShareGatewayModel) HasAutoSelect() bool {
-	if o != nil && o.AutoSelect != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetAutoSelect gets a reference to the given bool and assigns it to the AutoSelect field.
+// SetAutoSelect sets field value
 func (o *RepositoryShareGatewayModel) SetAutoSelect(v bool) {
-	o.AutoSelect = &v
+	o.AutoSelect = v
 }
 
-// GetGatewayServerId returns the GatewayServerId field value if set, zero value otherwise.
-func (o *RepositoryShareGatewayModel) GetGatewayServerId() string {
-	if o == nil || o.GatewayServerId == nil {
-		var ret string
+// GetGatewayServerIds returns the GatewayServerIds field value if set, zero value otherwise.
+func (o *RepositoryShareGatewayModel) GetGatewayServerIds() []string {
+	if o == nil || o.GatewayServerIds == nil {
+		var ret []string
 		return ret
 	}
-	return *o.GatewayServerId
+	return *o.GatewayServerIds
 }
 
-// GetGatewayServerIdOk returns a tuple with the GatewayServerId field value if set, nil otherwise
+// GetGatewayServerIdsOk returns a tuple with the GatewayServerIds field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RepositoryShareGatewayModel) GetGatewayServerIdOk() (*string, bool) {
-	if o == nil || o.GatewayServerId == nil {
+func (o *RepositoryShareGatewayModel) GetGatewayServerIdsOk() (*[]string, bool) {
+	if o == nil || o.GatewayServerIds == nil {
 		return nil, false
 	}
-	return o.GatewayServerId, true
+	return o.GatewayServerIds, true
 }
 
-// HasGatewayServerId returns a boolean if a field has been set.
-func (o *RepositoryShareGatewayModel) HasGatewayServerId() bool {
-	if o != nil && o.GatewayServerId != nil {
+// HasGatewayServerIds returns a boolean if a field has been set.
+func (o *RepositoryShareGatewayModel) HasGatewayServerIds() bool {
+	if o != nil && o.GatewayServerIds != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetGatewayServerId gets a reference to the given string and assigns it to the GatewayServerId field.
-func (o *RepositoryShareGatewayModel) SetGatewayServerId(v string) {
-	o.GatewayServerId = &v
+// SetGatewayServerIds gets a reference to the given []string and assigns it to the GatewayServerIds field.
+func (o *RepositoryShareGatewayModel) SetGatewayServerIds(v []string) {
+	o.GatewayServerIds = &v
 }
 
 func (o RepositoryShareGatewayModel) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.AutoSelect != nil {
+	if true {
 		toSerialize["autoSelect"] = o.AutoSelect
 	}
-	if o.GatewayServerId != nil {
-		toSerialize["gatewayServerId"] = o.GatewayServerId
+	if o.GatewayServerIds != nil {
+		toSerialize["gatewayServerIds"] = o.GatewayServerIds
 	}
 	return json.Marshal(toSerialize)
 }

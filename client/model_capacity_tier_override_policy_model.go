@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -18,7 +18,7 @@ import (
 // CapacityTierOverridePolicyModel Override policy.
 type CapacityTierOverridePolicyModel struct {
 	// If *true*, Veeam Backup & Replication moves oldest backup files sooner if scale-out backup repository is reaching the threshold.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled bool `json:"isEnabled"`
 	// Space threshold of the scale-out backup repository, in percent.
 	OverrideSpaceThresholdPercents *int32 `json:"overrideSpaceThresholdPercents,omitempty"`
 }
@@ -27,8 +27,9 @@ type CapacityTierOverridePolicyModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCapacityTierOverridePolicyModel() *CapacityTierOverridePolicyModel {
+func NewCapacityTierOverridePolicyModel(isEnabled bool, ) *CapacityTierOverridePolicyModel {
 	this := CapacityTierOverridePolicyModel{}
+	this.IsEnabled = isEnabled
 	return &this
 }
 
@@ -40,36 +41,28 @@ func NewCapacityTierOverridePolicyModelWithDefaults() *CapacityTierOverridePolic
 	return &this
 }
 
-// GetIsEnabled returns the IsEnabled field value if set, zero value otherwise.
+// GetIsEnabled returns the IsEnabled field value
 func (o *CapacityTierOverridePolicyModel) GetIsEnabled() bool {
-	if o == nil || o.IsEnabled == nil {
+	if o == nil  {
 		var ret bool
 		return ret
 	}
-	return *o.IsEnabled
+
+	return o.IsEnabled
 }
 
-// GetIsEnabledOk returns a tuple with the IsEnabled field value if set, nil otherwise
+// GetIsEnabledOk returns a tuple with the IsEnabled field value
 // and a boolean to check if the value has been set.
 func (o *CapacityTierOverridePolicyModel) GetIsEnabledOk() (*bool, bool) {
-	if o == nil || o.IsEnabled == nil {
+	if o == nil  {
 		return nil, false
 	}
-	return o.IsEnabled, true
+	return &o.IsEnabled, true
 }
 
-// HasIsEnabled returns a boolean if a field has been set.
-func (o *CapacityTierOverridePolicyModel) HasIsEnabled() bool {
-	if o != nil && o.IsEnabled != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetIsEnabled gets a reference to the given bool and assigns it to the IsEnabled field.
+// SetIsEnabled sets field value
 func (o *CapacityTierOverridePolicyModel) SetIsEnabled(v bool) {
-	o.IsEnabled = &v
+	o.IsEnabled = v
 }
 
 // GetOverrideSpaceThresholdPercents returns the OverrideSpaceThresholdPercents field value if set, zero value otherwise.
@@ -106,7 +99,7 @@ func (o *CapacityTierOverridePolicyModel) SetOverrideSpaceThresholdPercents(v in
 
 func (o CapacityTierOverridePolicyModel) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.IsEnabled != nil {
+	if true {
 		toSerialize["isEnabled"] = o.IsEnabled
 	}
 	if o.OverrideSpaceThresholdPercents != nil {

@@ -4,15 +4,100 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**ChangeCloudCredsSecretKey**](CredentialsApi.md#ChangeCloudCredsSecretKey) | **Post** /api/v1/cloudCredentials/{id}/changeSecretKey | Change Secret Key
 [**ChangePasswordForCreds**](CredentialsApi.md#ChangePasswordForCreds) | **Post** /api/v1/credentials/{id}/changepassword | Change Password
 [**ChangePrivateKeyForCreds**](CredentialsApi.md#ChangePrivateKeyForCreds) | **Post** /api/v1/credentials/{id}/changeprivatekey | Change Linux Private Key
 [**ChangeRootPasswordForCreds**](CredentialsApi.md#ChangeRootPasswordForCreds) | **Post** /api/v1/credentials/{id}/changerootpassword | Change Linux Root Password
+[**CreateCloudCreds**](CredentialsApi.md#CreateCloudCreds) | **Post** /api/v1/cloudCredentials | Add Cloud Credentials Record
+[**CreateCloudCredsHelperAppliance**](CredentialsApi.md#CreateCloudCredsHelperAppliance) | **Post** /api/v1/cloudCredentials/{id}/helperAppliances | Creates or updates helper appliances
 [**CreateCreds**](CredentialsApi.md#CreateCreds) | **Post** /api/v1/credentials | Add Credentials Record
+[**DeleteCloudCreds**](CredentialsApi.md#DeleteCloudCreds) | **Delete** /api/v1/cloudCredentials/{id} | Remove Cloud Credentials Record
+[**DeleteCloudCredsHelperAppliance**](CredentialsApi.md#DeleteCloudCredsHelperAppliance) | **Delete** /api/v1/cloudCredentials/{id}/helperAppliances/{applianceId} | Remove Cloud Credentials Record
 [**DeleteCreds**](CredentialsApi.md#DeleteCreds) | **Delete** /api/v1/credentials/{id} | Remove Credentials Record
+[**GetAllCloudCreds**](CredentialsApi.md#GetAllCloudCreds) | **Get** /api/v1/cloudCredentials | Get All Cloud Credentials
 [**GetAllCreds**](CredentialsApi.md#GetAllCreds) | **Get** /api/v1/credentials | Get All Credentials
+[**GetAllCredsHelperAppliances**](CredentialsApi.md#GetAllCredsHelperAppliances) | **Get** /api/v1/cloudCredentials/{id}/helperAppliances | Get Credentials Record
+[**GetCloudCreds**](CredentialsApi.md#GetCloudCreds) | **Get** /api/v1/cloudCredentials/{id} | Get Cloud Credentials Record
+[**GetCloudCredsHelperAppliance**](CredentialsApi.md#GetCloudCredsHelperAppliance) | **Get** /api/v1/cloudCredentials/{id}/helperAppliances/{applianceId} | Updates helper appliances
 [**GetCreds**](CredentialsApi.md#GetCreds) | **Get** /api/v1/credentials/{id} | Get Credentials Record
+[**ObtainCloudCredsByDeviceCode**](CredentialsApi.md#ObtainCloudCredsByDeviceCode) | **Post** /api/v1/cloudCredentials/deviceCode/ | Obtain Device Code to create Cloud Credentials
+[**UpdateCloudCreds**](CredentialsApi.md#UpdateCloudCreds) | **Put** /api/v1/cloudCredentials/{id} | Edit Cloud Credentials Record
 [**UpdateCreds**](CredentialsApi.md#UpdateCreds) | **Put** /api/v1/credentials/{id} | Edit Credentials Record
 
+
+
+## ChangeCloudCredsSecretKey
+
+> CloudCredentialsModel ChangeCloudCredsSecretKey(ctx, id).XApiVersion(xApiVersion).CloudCredentialsPasswordSpec(cloudCredentialsPasswordSpec).Execute()
+
+Change Secret Key
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+    cloudCredentialsPasswordSpec := *openapiclient.NewCloudCredentialsPasswordSpec() // CloudCredentialsPasswordSpec | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.ChangeCloudCredsSecretKey(context.Background(), id).XApiVersion(xApiVersion).CloudCredentialsPasswordSpec(cloudCredentialsPasswordSpec).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.ChangeCloudCredsSecretKey``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ChangeCloudCredsSecretKey`: CloudCredentialsModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.ChangeCloudCredsSecretKey`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiChangeCloudCredsSecretKeyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+ **cloudCredentialsPasswordSpec** | [**CloudCredentialsPasswordSpec**](CloudCredentialsPasswordSpec.md) |  | 
+
+### Return type
+
+[**CloudCredentialsModel**](CloudCredentialsModel.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## ChangePasswordForCreds
@@ -36,7 +121,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the credentials record.
     credentialsPasswordChangeSpec := *openapiclient.NewCredentialsPasswordChangeSpec("Password_example") // CredentialsPasswordChangeSpec | 
 
@@ -67,7 +152,7 @@ Other parameters are passed through a pointer to a apiChangePasswordForCredsRequ
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **credentialsPasswordChangeSpec** | [**CredentialsPasswordChangeSpec**](CredentialsPasswordChangeSpec.md) |  | 
 
@@ -110,7 +195,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the credentials record.
     privateKeyChangeSpec := *openapiclient.NewPrivateKeyChangeSpec("PrivateKey_example") // PrivateKeyChangeSpec | 
 
@@ -141,7 +226,7 @@ Other parameters are passed through a pointer to a apiChangePrivateKeyForCredsRe
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **privateKeyChangeSpec** | [**PrivateKeyChangeSpec**](PrivateKeyChangeSpec.md) |  | 
 
@@ -184,7 +269,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the credentials record.
     credentialsPasswordChangeSpec := *openapiclient.NewCredentialsPasswordChangeSpec("Password_example") // CredentialsPasswordChangeSpec | 
 
@@ -215,13 +300,155 @@ Other parameters are passed through a pointer to a apiChangeRootPasswordForCreds
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **credentialsPasswordChangeSpec** | [**CredentialsPasswordChangeSpec**](CredentialsPasswordChangeSpec.md) |  | 
 
 ### Return type
 
 **map[string]interface{}**
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateCloudCreds
+
+> CloudCredentialsModel CreateCloudCreds(ctx).XApiVersion(xApiVersion).CloudCredentialsSpec(cloudCredentialsSpec).Execute()
+
+Add Cloud Credentials Record
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    cloudCredentialsSpec := *openapiclient.NewCloudCredentialsSpec(openapiclient.ECloudCredentialsType("AzureStorage")) // CloudCredentialsSpec | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.CreateCloudCreds(context.Background()).XApiVersion(xApiVersion).CloudCredentialsSpec(cloudCredentialsSpec).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.CreateCloudCreds``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateCloudCreds`: CloudCredentialsModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.CreateCloudCreds`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateCloudCredsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+ **cloudCredentialsSpec** | [**CloudCredentialsSpec**](CloudCredentialsSpec.md) |  | 
+
+### Return type
+
+[**CloudCredentialsModel**](CloudCredentialsModel.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateCloudCredsHelperAppliance
+
+> SessionModel CreateCloudCredsHelperAppliance(ctx, id).XApiVersion(xApiVersion).CloudHelperApplianceSpec(cloudHelperApplianceSpec).Execute()
+
+Creates or updates helper appliances
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+    cloudHelperApplianceSpec := *openapiclient.NewCloudHelperApplianceSpec(openapiclient.ECloudCredentialsType("AzureStorage")) // CloudHelperApplianceSpec | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.CreateCloudCredsHelperAppliance(context.Background(), id).XApiVersion(xApiVersion).CloudHelperApplianceSpec(cloudHelperApplianceSpec).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.CreateCloudCredsHelperAppliance``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateCloudCredsHelperAppliance`: SessionModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.CreateCloudCredsHelperAppliance`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateCloudCredsHelperApplianceRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+ **cloudHelperApplianceSpec** | [**CloudHelperApplianceSpec**](CloudHelperApplianceSpec.md) |  | 
+
+### Return type
+
+[**SessionModel**](SessionModel.md)
 
 ### Authorization
 
@@ -258,7 +485,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     credentialsSpec := *openapiclient.NewCredentialsSpec("Username_example", openapiclient.ECredentialsType("Standard")) // CredentialsSpec | 
 
     configuration := openapiclient.NewConfiguration()
@@ -284,7 +511,7 @@ Other parameters are passed through a pointer to a apiCreateCredsRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **credentialsSpec** | [**CredentialsSpec**](CredentialsSpec.md) |  | 
 
 ### Return type
@@ -298,6 +525,153 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteCloudCreds
+
+> map[string]interface{} DeleteCloudCreds(ctx, id).XApiVersion(xApiVersion).Execute()
+
+Remove Cloud Credentials Record
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.DeleteCloudCreds(context.Background(), id).XApiVersion(xApiVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.DeleteCloudCreds``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `DeleteCloudCreds`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.DeleteCloudCreds`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteCloudCredsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteCloudCredsHelperAppliance
+
+> map[string]interface{} DeleteCloudCredsHelperAppliance(ctx, id, applianceId).XApiVersion(xApiVersion).Execute()
+
+Remove Cloud Credentials Record
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+    applianceId := TODO // string | ID of the cloud helper appliance record.
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.DeleteCloudCredsHelperAppliance(context.Background(), id, applianceId).XApiVersion(xApiVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.DeleteCloudCredsHelperAppliance``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `DeleteCloudCredsHelperAppliance`: map[string]interface{}
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.DeleteCloudCredsHelperAppliance`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+**applianceId** | [**string**](.md) | ID of the cloud helper appliance record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteCloudCredsHelperApplianceRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -326,7 +700,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the credentials record.
 
     configuration := openapiclient.NewConfiguration()
@@ -356,12 +730,90 @@ Other parameters are passed through a pointer to a apiDeleteCredsRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
 
 **map[string]interface{}**
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetAllCloudCreds
+
+> CloudCredentialsResult GetAllCloudCreds(ctx).XApiVersion(xApiVersion).Skip(skip).Limit(limit).OrderColumn(orderColumn).OrderAsc(orderAsc).NameFilter(nameFilter).TypeFilter(typeFilter).Execute()
+
+Get All Cloud Credentials
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    skip := int32(56) // int32 | Number of credentials records to skip. (optional)
+    limit := int32(56) // int32 | Maximum number of credentials records to return. (optional)
+    orderColumn := openapiclient.ECloudCredentialsFiltersOrderColumn("Name") // ECloudCredentialsFiltersOrderColumn | Sorts credentials by one of the credentials parameters. (optional)
+    orderAsc := true // bool | Sorts credentials in the ascending order by the `orderColumn` parameter. (optional)
+    nameFilter := "nameFilter_example" // string | Filters credentials by the `nameFilter` pattern. The pattern can match any credentials parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. (optional)
+    typeFilter := openapiclient.ECloudCredentialsType("AzureStorage") // ECloudCredentialsType |  (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.GetAllCloudCreds(context.Background()).XApiVersion(xApiVersion).Skip(skip).Limit(limit).OrderColumn(orderColumn).OrderAsc(orderAsc).NameFilter(nameFilter).TypeFilter(typeFilter).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.GetAllCloudCreds``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetAllCloudCreds`: CloudCredentialsResult
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.GetAllCloudCreds`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAllCloudCredsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+ **skip** | **int32** | Number of credentials records to skip. | 
+ **limit** | **int32** | Maximum number of credentials records to return. | 
+ **orderColumn** | [**ECloudCredentialsFiltersOrderColumn**](ECloudCredentialsFiltersOrderColumn.md) | Sorts credentials by one of the credentials parameters. | 
+ **orderAsc** | **bool** | Sorts credentials in the ascending order by the &#x60;orderColumn&#x60; parameter. | 
+ **nameFilter** | **string** | Filters credentials by the &#x60;nameFilter&#x60; pattern. The pattern can match any credentials parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. | 
+ **typeFilter** | [**ECloudCredentialsType**](ECloudCredentialsType.md) |  | 
+
+### Return type
+
+[**CloudCredentialsResult**](CloudCredentialsResult.md)
 
 ### Authorization
 
@@ -398,7 +850,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of credentials records to skip. (optional)
     limit := int32(56) // int32 | Maximum number of credentials records to return. (optional)
     orderColumn := openapiclient.ECredentialsFiltersOrderColumn("Username") // ECredentialsFiltersOrderColumn | Sorts credentials by one of the credentials parameters. (optional)
@@ -428,7 +880,7 @@ Other parameters are passed through a pointer to a apiGetAllCredsRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of credentials records to skip. | 
  **limit** | **int32** | Maximum number of credentials records to return. | 
  **orderColumn** | [**ECredentialsFiltersOrderColumn**](ECredentialsFiltersOrderColumn.md) | Sorts credentials by one of the credentials parameters. | 
@@ -438,6 +890,225 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**CredentialsResult**](CredentialsResult.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetAllCredsHelperAppliances
+
+> CloudHelperApplianceResult GetAllCredsHelperAppliances(ctx, id).XApiVersion(xApiVersion).Execute()
+
+Get Credentials Record
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the credentials record.
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.GetAllCredsHelperAppliances(context.Background(), id).XApiVersion(xApiVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.GetAllCredsHelperAppliances``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetAllCredsHelperAppliances`: CloudHelperApplianceResult
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.GetAllCredsHelperAppliances`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the credentials record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAllCredsHelperAppliancesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+
+### Return type
+
+[**CloudHelperApplianceResult**](CloudHelperApplianceResult.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetCloudCreds
+
+> CloudCredentialsModel GetCloudCreds(ctx, id).XApiVersion(xApiVersion).Execute()
+
+Get Cloud Credentials Record
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.GetCloudCreds(context.Background(), id).XApiVersion(xApiVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.GetCloudCreds``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetCloudCreds`: CloudCredentialsModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.GetCloudCreds`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCloudCredsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+
+### Return type
+
+[**CloudCredentialsModel**](CloudCredentialsModel.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetCloudCredsHelperAppliance
+
+> CloudHelperApplianceModel GetCloudCredsHelperAppliance(ctx, id, applianceId).XApiVersion(xApiVersion).Execute()
+
+Updates helper appliances
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+    applianceId := TODO // string | ID of the cloud helper appliance record.
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.GetCloudCredsHelperAppliance(context.Background(), id, applianceId).XApiVersion(xApiVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.GetCloudCredsHelperAppliance``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetCloudCredsHelperAppliance`: CloudHelperApplianceModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.GetCloudCredsHelperAppliance`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+**applianceId** | [**string**](.md) | ID of the cloud helper appliance record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCloudCredsHelperApplianceRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+
+
+### Return type
+
+[**CloudHelperApplianceModel**](CloudHelperApplianceModel.md)
 
 ### Authorization
 
@@ -474,7 +1145,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the credentials record.
 
     configuration := openapiclient.NewConfiguration()
@@ -504,7 +1175,7 @@ Other parameters are passed through a pointer to a apiGetCredsRequest struct via
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -518,6 +1189,148 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ObtainCloudCredsByDeviceCode
+
+> CloudDeviceCodeModel ObtainCloudCredsByDeviceCode(ctx).XApiVersion(xApiVersion).CloudDeviceCodeSpec(cloudDeviceCodeSpec).Execute()
+
+Obtain Device Code to create Cloud Credentials
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    cloudDeviceCodeSpec := *openapiclient.NewCloudDeviceCodeSpec(openapiclient.ECloudCredentialsType("AzureStorage")) // CloudDeviceCodeSpec | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.ObtainCloudCredsByDeviceCode(context.Background()).XApiVersion(xApiVersion).CloudDeviceCodeSpec(cloudDeviceCodeSpec).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.ObtainCloudCredsByDeviceCode``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ObtainCloudCredsByDeviceCode`: CloudDeviceCodeModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.ObtainCloudCredsByDeviceCode`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiObtainCloudCredsByDeviceCodeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+ **cloudDeviceCodeSpec** | [**CloudDeviceCodeSpec**](CloudDeviceCodeSpec.md) |  | 
+
+### Return type
+
+[**CloudDeviceCodeModel**](CloudDeviceCodeModel.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateCloudCreds
+
+> CloudCredentialsModel UpdateCloudCreds(ctx, id).XApiVersion(xApiVersion).CloudCredentialsModel(cloudCredentialsModel).Execute()
+
+Edit Cloud Credentials Record
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
+    id := TODO // string | ID of the cloud credentials record.
+    cloudCredentialsModel := *openapiclient.NewCloudCredentialsModel("Id_example", "Name_example", openapiclient.ECloudCredentialsType("AzureStorage")) // CloudCredentialsModel | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.CredentialsApi.UpdateCloudCreds(context.Background(), id).XApiVersion(xApiVersion).CloudCredentialsModel(cloudCredentialsModel).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `CredentialsApi.UpdateCloudCreds``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `UpdateCloudCreds`: CloudCredentialsModel
+    fmt.Fprintf(os.Stdout, "Response from `CredentialsApi.UpdateCloudCreds`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | [**string**](.md) | ID of the cloud credentials record. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateCloudCredsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
+
+ **cloudCredentialsModel** | [**CloudCredentialsModel**](CloudCredentialsModel.md) |  | 
+
+### Return type
+
+[**CloudCredentialsModel**](CloudCredentialsModel.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -547,7 +1360,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the credentials record.
     credentialsModel := *openapiclient.NewCredentialsModel("Id_example", "Username_example", "Description_example", openapiclient.ECredentialsType("Standard"), time.Now()) // CredentialsModel | 
 
@@ -578,7 +1391,7 @@ Other parameters are passed through a pointer to a apiUpdateCredsRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **credentialsModel** | [**CredentialsModel**](CredentialsModel.md) |  | 
 

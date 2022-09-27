@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -16,7 +16,7 @@ import (
 	"fmt"
 )
 
-// ETransactionLogsSettings Transaction logs settings that define whether copy-only backups must be created or transaction logs for Microsoft Exchange, Microsoft SQL and Oracle VMs must be processed.</br> If transaction log processing is selected, specify the following parameters:</br> <ul> <li>[For Microsoft SQL Server VMs] Microsoft SQL Server transaction log settings</li> <li>[For Oracle VMs] Oracle archived log settings</li> </ul> 
+// ETransactionLogsSettings Transaction logs settings that define whether copy-only backups must be created, or transaction logs for Microsoft Exchange, Microsoft SQL and Oracle VMs must be processed.<br> If transaction log processing is selected, specify the following parameters:<ul> <li>[For Microsoft SQL Server VMs] Microsoft SQL Server transaction log settings</li> <li>[For Oracle VMs] Oracle archived log settings</li></ul>
 type ETransactionLogsSettings string
 
 // List of ETransactionLogsSettings

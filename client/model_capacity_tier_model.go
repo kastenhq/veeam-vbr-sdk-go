@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -18,9 +18,8 @@ import (
 // CapacityTierModel Capacity tier.
 type CapacityTierModel struct {
 	// If *true*, the capacity tier is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-	// ID of an object storage repository added as a capacity extent.
-	ExtentId *string `json:"extentId,omitempty"`
+	Enabled bool `json:"enabled"`
+	Extents *[]CapacityExtentModel `json:"extents,omitempty"`
 	OffloadWindow *BackupWindowSettingModel `json:"offloadWindow,omitempty"`
 	// If *true*, Veeam Backup & Replication copies backups from the performance extents to the capacity extent as soon as the backups are created.
 	CopyPolicyEnabled *bool `json:"copyPolicyEnabled,omitempty"`
@@ -36,8 +35,9 @@ type CapacityTierModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCapacityTierModel() *CapacityTierModel {
+func NewCapacityTierModel(enabled bool, ) *CapacityTierModel {
 	this := CapacityTierModel{}
+	this.Enabled = enabled
 	return &this
 }
 
@@ -49,68 +49,60 @@ func NewCapacityTierModelWithDefaults() *CapacityTierModel {
 	return &this
 }
 
-// GetEnabled returns the Enabled field value if set, zero value otherwise.
+// GetEnabled returns the Enabled field value
 func (o *CapacityTierModel) GetEnabled() bool {
-	if o == nil || o.Enabled == nil {
+	if o == nil  {
 		var ret bool
 		return ret
 	}
-	return *o.Enabled
+
+	return o.Enabled
 }
 
-// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// GetEnabledOk returns a tuple with the Enabled field value
 // and a boolean to check if the value has been set.
 func (o *CapacityTierModel) GetEnabledOk() (*bool, bool) {
-	if o == nil || o.Enabled == nil {
+	if o == nil  {
 		return nil, false
 	}
-	return o.Enabled, true
+	return &o.Enabled, true
 }
 
-// HasEnabled returns a boolean if a field has been set.
-func (o *CapacityTierModel) HasEnabled() bool {
-	if o != nil && o.Enabled != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+// SetEnabled sets field value
 func (o *CapacityTierModel) SetEnabled(v bool) {
-	o.Enabled = &v
+	o.Enabled = v
 }
 
-// GetExtentId returns the ExtentId field value if set, zero value otherwise.
-func (o *CapacityTierModel) GetExtentId() string {
-	if o == nil || o.ExtentId == nil {
-		var ret string
+// GetExtents returns the Extents field value if set, zero value otherwise.
+func (o *CapacityTierModel) GetExtents() []CapacityExtentModel {
+	if o == nil || o.Extents == nil {
+		var ret []CapacityExtentModel
 		return ret
 	}
-	return *o.ExtentId
+	return *o.Extents
 }
 
-// GetExtentIdOk returns a tuple with the ExtentId field value if set, nil otherwise
+// GetExtentsOk returns a tuple with the Extents field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CapacityTierModel) GetExtentIdOk() (*string, bool) {
-	if o == nil || o.ExtentId == nil {
+func (o *CapacityTierModel) GetExtentsOk() (*[]CapacityExtentModel, bool) {
+	if o == nil || o.Extents == nil {
 		return nil, false
 	}
-	return o.ExtentId, true
+	return o.Extents, true
 }
 
-// HasExtentId returns a boolean if a field has been set.
-func (o *CapacityTierModel) HasExtentId() bool {
-	if o != nil && o.ExtentId != nil {
+// HasExtents returns a boolean if a field has been set.
+func (o *CapacityTierModel) HasExtents() bool {
+	if o != nil && o.Extents != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetExtentId gets a reference to the given string and assigns it to the ExtentId field.
-func (o *CapacityTierModel) SetExtentId(v string) {
-	o.ExtentId = &v
+// SetExtents gets a reference to the given []CapacityExtentModel and assigns it to the Extents field.
+func (o *CapacityTierModel) SetExtents(v []CapacityExtentModel) {
+	o.Extents = &v
 }
 
 // GetOffloadWindow returns the OffloadWindow field value if set, zero value otherwise.
@@ -307,11 +299,11 @@ func (o *CapacityTierModel) SetEncryption(v BackupStorageSettingsEncryptionModel
 
 func (o CapacityTierModel) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Enabled != nil {
+	if true {
 		toSerialize["enabled"] = o.Enabled
 	}
-	if o.ExtentId != nil {
-		toSerialize["extentId"] = o.ExtentId
+	if o.Extents != nil {
+		toSerialize["extents"] = o.Extents
 	}
 	if o.OffloadWindow != nil {
 		toSerialize["offloadWindow"] = o.OffloadWindow

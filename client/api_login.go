@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -191,6 +191,7 @@ type ApiCreateTokenRequest struct {
 	refreshToken *string
 	code *string
 	useShortTermRefresh *bool
+	vbrToken *string
 }
 
 func (r ApiCreateTokenRequest) XApiVersion(xApiVersion string) ApiCreateTokenRequest {
@@ -219,6 +220,10 @@ func (r ApiCreateTokenRequest) Code(code string) ApiCreateTokenRequest {
 }
 func (r ApiCreateTokenRequest) UseShortTermRefresh(useShortTermRefresh bool) ApiCreateTokenRequest {
 	r.useShortTermRefresh = &useShortTermRefresh
+	return r
+}
+func (r ApiCreateTokenRequest) VbrToken(vbrToken string) ApiCreateTokenRequest {
+	r.vbrToken = &vbrToken
 	return r
 }
 
@@ -303,6 +308,9 @@ func (a *LoginApiService) CreateTokenExecute(r ApiCreateTokenRequest) (TokenMode
 	}
 	if r.useShortTermRefresh != nil {
 		localVarFormParams.Add("use_short_term_refresh", parameterToString(*r.useShortTermRefresh, ""))
+	}
+	if r.vbrToken != nil {
+		localVarFormParams.Add("vbr_token", parameterToString(*r.vbrToken, ""))
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -397,8 +405,7 @@ func (r ApiLogoutRequest) Execute() (map[string]interface{}, *_nethttp.Response,
 
 /*
  * Logout Log Out
- * The HTTP POST request to the `/api/oauth2/logout` path allows you to perform the logout operation. After you log out, access and refresh tokens are expired.
-
+ * The HTTP POST request to the `/api/oauth2/logout` path allows you to perform the logout operation. After you log out, your access and refresh tokens are expired.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @return ApiLogoutRequest
  */

@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -27,6 +27,184 @@ var (
 
 // CredentialsApiService CredentialsApi service
 type CredentialsApiService service
+
+type ApiChangeCloudCredsSecretKeyRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+	cloudCredentialsPasswordSpec *CloudCredentialsPasswordSpec
+}
+
+func (r ApiChangeCloudCredsSecretKeyRequest) XApiVersion(xApiVersion string) ApiChangeCloudCredsSecretKeyRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiChangeCloudCredsSecretKeyRequest) CloudCredentialsPasswordSpec(cloudCredentialsPasswordSpec CloudCredentialsPasswordSpec) ApiChangeCloudCredsSecretKeyRequest {
+	r.cloudCredentialsPasswordSpec = &cloudCredentialsPasswordSpec
+	return r
+}
+
+func (r ApiChangeCloudCredsSecretKeyRequest) Execute() (CloudCredentialsModel, *_nethttp.Response, error) {
+	return r.ApiService.ChangeCloudCredsSecretKeyExecute(r)
+}
+
+/*
+ * ChangeCloudCredsSecretKey Change Secret Key
+ * The HTTP POST request to the `/api/v1/cloudCredentials/{id}/changeSecretKey` path allows you to change a secret access key of a credentials record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @return ApiChangeCloudCredsSecretKeyRequest
+ */
+func (a *CredentialsApiService) ChangeCloudCredsSecretKey(ctx _context.Context, id string) ApiChangeCloudCredsSecretKeyRequest {
+	return ApiChangeCloudCredsSecretKeyRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudCredentialsModel
+ */
+func (a *CredentialsApiService) ChangeCloudCredsSecretKeyExecute(r ApiChangeCloudCredsSecretKeyRequest) (CloudCredentialsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudCredentialsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.ChangeCloudCredsSecretKey")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}/changeSecretKey"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.cloudCredentialsPasswordSpec == nil {
+		return localVarReturnValue, nil, reportError("cloudCredentialsPasswordSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.cloudCredentialsPasswordSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiChangePasswordForCredsRequest struct {
 	ctx _context.Context
@@ -592,6 +770,358 @@ func (a *CredentialsApiService) ChangeRootPasswordForCredsExecute(r ApiChangeRoo
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiCreateCloudCredsRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	cloudCredentialsSpec *CloudCredentialsSpec
+}
+
+func (r ApiCreateCloudCredsRequest) XApiVersion(xApiVersion string) ApiCreateCloudCredsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiCreateCloudCredsRequest) CloudCredentialsSpec(cloudCredentialsSpec CloudCredentialsSpec) ApiCreateCloudCredsRequest {
+	r.cloudCredentialsSpec = &cloudCredentialsSpec
+	return r
+}
+
+func (r ApiCreateCloudCredsRequest) Execute() (CloudCredentialsModel, *_nethttp.Response, error) {
+	return r.ApiService.CreateCloudCredsExecute(r)
+}
+
+/*
+ * CreateCloudCreds Add Cloud Credentials Record
+ * The HTTP POST request to the `/api/v1/cloudCredentials` path allows you to add a credentials record used to connect to cloud services.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiCreateCloudCredsRequest
+ */
+func (a *CredentialsApiService) CreateCloudCreds(ctx _context.Context) ApiCreateCloudCredsRequest {
+	return ApiCreateCloudCredsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudCredentialsModel
+ */
+func (a *CredentialsApiService) CreateCloudCredsExecute(r ApiCreateCloudCredsRequest) (CloudCredentialsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudCredentialsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.CreateCloudCreds")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.cloudCredentialsSpec == nil {
+		return localVarReturnValue, nil, reportError("cloudCredentialsSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.cloudCredentialsSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiCreateCloudCredsHelperApplianceRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+	cloudHelperApplianceSpec *CloudHelperApplianceSpec
+}
+
+func (r ApiCreateCloudCredsHelperApplianceRequest) XApiVersion(xApiVersion string) ApiCreateCloudCredsHelperApplianceRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiCreateCloudCredsHelperApplianceRequest) CloudHelperApplianceSpec(cloudHelperApplianceSpec CloudHelperApplianceSpec) ApiCreateCloudCredsHelperApplianceRequest {
+	r.cloudHelperApplianceSpec = &cloudHelperApplianceSpec
+	return r
+}
+
+func (r ApiCreateCloudCredsHelperApplianceRequest) Execute() (SessionModel, *_nethttp.Response, error) {
+	return r.ApiService.CreateCloudCredsHelperApplianceExecute(r)
+}
+
+/*
+ * CreateCloudCredsHelperAppliance Creates or updates helper appliances
+ * The HTTP POST request to the `/api/v1/cloudCredentials/{id}/helperAppliances` path allows you to create a helper appliances of a credentials record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @return ApiCreateCloudCredsHelperApplianceRequest
+ */
+func (a *CredentialsApiService) CreateCloudCredsHelperAppliance(ctx _context.Context, id string) ApiCreateCloudCredsHelperApplianceRequest {
+	return ApiCreateCloudCredsHelperApplianceRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return SessionModel
+ */
+func (a *CredentialsApiService) CreateCloudCredsHelperApplianceExecute(r ApiCreateCloudCredsHelperApplianceRequest) (SessionModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  SessionModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.CreateCloudCredsHelperAppliance")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}/helperAppliances"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.cloudHelperApplianceSpec == nil {
+		return localVarReturnValue, nil, reportError("cloudHelperApplianceSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.cloudHelperApplianceSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiCreateCredsRequest struct {
 	ctx _context.Context
 	ApiService *CredentialsApiService
@@ -766,6 +1296,346 @@ func (a *CredentialsApiService) CreateCredsExecute(r ApiCreateCredsRequest) (Cre
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiDeleteCloudCredsRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+}
+
+func (r ApiDeleteCloudCredsRequest) XApiVersion(xApiVersion string) ApiDeleteCloudCredsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiDeleteCloudCredsRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
+	return r.ApiService.DeleteCloudCredsExecute(r)
+}
+
+/*
+ * DeleteCloudCreds Remove Cloud Credentials Record
+ * The HTTP DELETE request to the `/api/v1/cloudCredentials/{id}` path allows you to remove a cloud credentials record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @return ApiDeleteCloudCredsRequest
+ */
+func (a *CredentialsApiService) DeleteCloudCreds(ctx _context.Context, id string) ApiDeleteCloudCredsRequest {
+	return ApiDeleteCloudCredsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return map[string]interface{}
+ */
+func (a *CredentialsApiService) DeleteCloudCredsExecute(r ApiDeleteCloudCredsRequest) (map[string]interface{}, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.DeleteCloudCreds")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiDeleteCloudCredsHelperApplianceRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+	applianceId string
+}
+
+func (r ApiDeleteCloudCredsHelperApplianceRequest) XApiVersion(xApiVersion string) ApiDeleteCloudCredsHelperApplianceRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiDeleteCloudCredsHelperApplianceRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
+	return r.ApiService.DeleteCloudCredsHelperApplianceExecute(r)
+}
+
+/*
+ * DeleteCloudCredsHelperAppliance Remove Cloud Credentials Record
+ * The HTTP DELETE request to the `/api/v1/cloudCredentials/{id}/helperAppliances` path allows you to remove a helper appliances record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @param applianceId ID of the cloud helper appliance record.
+ * @return ApiDeleteCloudCredsHelperApplianceRequest
+ */
+func (a *CredentialsApiService) DeleteCloudCredsHelperAppliance(ctx _context.Context, id string, applianceId string) ApiDeleteCloudCredsHelperApplianceRequest {
+	return ApiDeleteCloudCredsHelperApplianceRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+		applianceId: applianceId,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return map[string]interface{}
+ */
+func (a *CredentialsApiService) DeleteCloudCredsHelperApplianceExecute(r ApiDeleteCloudCredsHelperApplianceRequest) (map[string]interface{}, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.DeleteCloudCredsHelperAppliance")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}/helperAppliances/{applianceId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"applianceId"+"}", _neturl.PathEscape(parameterToString(r.applianceId, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiDeleteCredsRequest struct {
 	ctx _context.Context
 	ApiService *CredentialsApiService
@@ -901,6 +1771,208 @@ func (a *CredentialsApiService) DeleteCredsExecute(r ApiDeleteCredsRequest) (map
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetAllCloudCredsRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	skip *int32
+	limit *int32
+	orderColumn *ECloudCredentialsFiltersOrderColumn
+	orderAsc *bool
+	nameFilter *string
+	typeFilter *ECloudCredentialsType
+}
+
+func (r ApiGetAllCloudCredsRequest) XApiVersion(xApiVersion string) ApiGetAllCloudCredsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiGetAllCloudCredsRequest) Skip(skip int32) ApiGetAllCloudCredsRequest {
+	r.skip = &skip
+	return r
+}
+func (r ApiGetAllCloudCredsRequest) Limit(limit int32) ApiGetAllCloudCredsRequest {
+	r.limit = &limit
+	return r
+}
+func (r ApiGetAllCloudCredsRequest) OrderColumn(orderColumn ECloudCredentialsFiltersOrderColumn) ApiGetAllCloudCredsRequest {
+	r.orderColumn = &orderColumn
+	return r
+}
+func (r ApiGetAllCloudCredsRequest) OrderAsc(orderAsc bool) ApiGetAllCloudCredsRequest {
+	r.orderAsc = &orderAsc
+	return r
+}
+func (r ApiGetAllCloudCredsRequest) NameFilter(nameFilter string) ApiGetAllCloudCredsRequest {
+	r.nameFilter = &nameFilter
+	return r
+}
+func (r ApiGetAllCloudCredsRequest) TypeFilter(typeFilter ECloudCredentialsType) ApiGetAllCloudCredsRequest {
+	r.typeFilter = &typeFilter
+	return r
+}
+
+func (r ApiGetAllCloudCredsRequest) Execute() (CloudCredentialsResult, *_nethttp.Response, error) {
+	return r.ApiService.GetAllCloudCredsExecute(r)
+}
+
+/*
+ * GetAllCloudCreds Get All Cloud Credentials
+ * The HTTP GET request to the `/api/v1/cloudCredentials` path allows you to get an array of credentials records used to connect to cloud services.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiGetAllCloudCredsRequest
+ */
+func (a *CredentialsApiService) GetAllCloudCreds(ctx _context.Context) ApiGetAllCloudCredsRequest {
+	return ApiGetAllCloudCredsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudCredentialsResult
+ */
+func (a *CredentialsApiService) GetAllCloudCredsExecute(r ApiGetAllCloudCredsRequest) (CloudCredentialsResult, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudCredentialsResult
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.GetAllCloudCreds")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	if r.skip != nil {
+		localVarQueryParams.Add("skip", parameterToString(*r.skip, ""))
+	}
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
+	}
+	if r.orderColumn != nil {
+		localVarQueryParams.Add("orderColumn", parameterToString(*r.orderColumn, ""))
+	}
+	if r.orderAsc != nil {
+		localVarQueryParams.Add("orderAsc", parameterToString(*r.orderAsc, ""))
+	}
+	if r.nameFilter != nil {
+		localVarQueryParams.Add("nameFilter", parameterToString(*r.nameFilter, ""))
+	}
+	if r.typeFilter != nil {
+		localVarQueryParams.Add("typeFilter", parameterToString(*r.typeFilter, ""))
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
 			var v Error
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1128,6 +2200,514 @@ func (a *CredentialsApiService) GetAllCredsExecute(r ApiGetAllCredsRequest) (Cre
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetAllCredsHelperAppliancesRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+}
+
+func (r ApiGetAllCredsHelperAppliancesRequest) XApiVersion(xApiVersion string) ApiGetAllCredsHelperAppliancesRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiGetAllCredsHelperAppliancesRequest) Execute() (CloudHelperApplianceResult, *_nethttp.Response, error) {
+	return r.ApiService.GetAllCredsHelperAppliancesExecute(r)
+}
+
+/*
+ * GetAllCredsHelperAppliances Get Credentials Record
+ * The HTTP GET request to the `/api/v1/credentials/{id}` path allows you to get a helper appliances record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the credentials record.
+ * @return ApiGetAllCredsHelperAppliancesRequest
+ */
+func (a *CredentialsApiService) GetAllCredsHelperAppliances(ctx _context.Context, id string) ApiGetAllCredsHelperAppliancesRequest {
+	return ApiGetAllCredsHelperAppliancesRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudHelperApplianceResult
+ */
+func (a *CredentialsApiService) GetAllCredsHelperAppliancesExecute(r ApiGetAllCredsHelperAppliancesRequest) (CloudHelperApplianceResult, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudHelperApplianceResult
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.GetAllCredsHelperAppliances")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}/helperAppliances"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetCloudCredsRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+}
+
+func (r ApiGetCloudCredsRequest) XApiVersion(xApiVersion string) ApiGetCloudCredsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiGetCloudCredsRequest) Execute() (CloudCredentialsModel, *_nethttp.Response, error) {
+	return r.ApiService.GetCloudCredsExecute(r)
+}
+
+/*
+ * GetCloudCreds Get Cloud Credentials Record
+ * The HTTP GET request to the `/api/v1/cloudCredentials/{id}` path allows you to get a cloud credentials record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @return ApiGetCloudCredsRequest
+ */
+func (a *CredentialsApiService) GetCloudCreds(ctx _context.Context, id string) ApiGetCloudCredsRequest {
+	return ApiGetCloudCredsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudCredentialsModel
+ */
+func (a *CredentialsApiService) GetCloudCredsExecute(r ApiGetCloudCredsRequest) (CloudCredentialsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudCredentialsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.GetCloudCreds")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetCloudCredsHelperApplianceRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+	applianceId string
+}
+
+func (r ApiGetCloudCredsHelperApplianceRequest) XApiVersion(xApiVersion string) ApiGetCloudCredsHelperApplianceRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+
+func (r ApiGetCloudCredsHelperApplianceRequest) Execute() (CloudHelperApplianceModel, *_nethttp.Response, error) {
+	return r.ApiService.GetCloudCredsHelperApplianceExecute(r)
+}
+
+/*
+ * GetCloudCredsHelperAppliance Updates helper appliances
+ * The HTTP PUT request to the `/api/v1/cloudCredentials/{id}/helperAppliances` path allows you to update a helper appliances of a credentials record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @param applianceId ID of the cloud helper appliance record.
+ * @return ApiGetCloudCredsHelperApplianceRequest
+ */
+func (a *CredentialsApiService) GetCloudCredsHelperAppliance(ctx _context.Context, id string, applianceId string) ApiGetCloudCredsHelperApplianceRequest {
+	return ApiGetCloudCredsHelperApplianceRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+		applianceId: applianceId,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudHelperApplianceModel
+ */
+func (a *CredentialsApiService) GetCloudCredsHelperApplianceExecute(r ApiGetCloudCredsHelperApplianceRequest) (CloudHelperApplianceModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudHelperApplianceModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.GetCloudCredsHelperAppliance")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}/helperAppliances/{applianceId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"applianceId"+"}", _neturl.PathEscape(parameterToString(r.applianceId, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetCredsRequest struct {
 	ctx _context.Context
 	ApiService *CredentialsApiService
@@ -1241,6 +2821,368 @@ func (a *CredentialsApiService) GetCredsExecute(r ApiGetCredsRequest) (Credentia
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiObtainCloudCredsByDeviceCodeRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	cloudDeviceCodeSpec *CloudDeviceCodeSpec
+}
+
+func (r ApiObtainCloudCredsByDeviceCodeRequest) XApiVersion(xApiVersion string) ApiObtainCloudCredsByDeviceCodeRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiObtainCloudCredsByDeviceCodeRequest) CloudDeviceCodeSpec(cloudDeviceCodeSpec CloudDeviceCodeSpec) ApiObtainCloudCredsByDeviceCodeRequest {
+	r.cloudDeviceCodeSpec = &cloudDeviceCodeSpec
+	return r
+}
+
+func (r ApiObtainCloudCredsByDeviceCodeRequest) Execute() (CloudDeviceCodeModel, *_nethttp.Response, error) {
+	return r.ApiService.ObtainCloudCredsByDeviceCodeExecute(r)
+}
+
+/*
+ * ObtainCloudCredsByDeviceCode Obtain Device Code to create Cloud Credentials
+ * The HTTP POST request to the `/api/v1/cloudCredentials/deviceCode/` path allows you to add a credentials record used to connect to cloud services.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @return ApiObtainCloudCredsByDeviceCodeRequest
+ */
+func (a *CredentialsApiService) ObtainCloudCredsByDeviceCode(ctx _context.Context) ApiObtainCloudCredsByDeviceCodeRequest {
+	return ApiObtainCloudCredsByDeviceCodeRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudDeviceCodeModel
+ */
+func (a *CredentialsApiService) ObtainCloudCredsByDeviceCodeExecute(r ApiObtainCloudCredsByDeviceCodeRequest) (CloudDeviceCodeModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudDeviceCodeModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.ObtainCloudCredsByDeviceCode")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/deviceCode/"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.cloudDeviceCodeSpec == nil {
+		return localVarReturnValue, nil, reportError("cloudDeviceCodeSpec is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.cloudDeviceCodeSpec
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 500 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateCloudCredsRequest struct {
+	ctx _context.Context
+	ApiService *CredentialsApiService
+	xApiVersion *string
+	id string
+	cloudCredentialsModel *CloudCredentialsModel
+}
+
+func (r ApiUpdateCloudCredsRequest) XApiVersion(xApiVersion string) ApiUpdateCloudCredsRequest {
+	r.xApiVersion = &xApiVersion
+	return r
+}
+func (r ApiUpdateCloudCredsRequest) CloudCredentialsModel(cloudCredentialsModel CloudCredentialsModel) ApiUpdateCloudCredsRequest {
+	r.cloudCredentialsModel = &cloudCredentialsModel
+	return r
+}
+
+func (r ApiUpdateCloudCredsRequest) Execute() (CloudCredentialsModel, *_nethttp.Response, error) {
+	return r.ApiService.UpdateCloudCredsExecute(r)
+}
+
+/*
+ * UpdateCloudCreds Edit Cloud Credentials Record
+ * The HTTP PUT request to the `/api/v1/cloudCredentials/{id}` path allows you to edit a cloud credentials record that has the specified `id`.
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param id ID of the cloud credentials record.
+ * @return ApiUpdateCloudCredsRequest
+ */
+func (a *CredentialsApiService) UpdateCloudCreds(ctx _context.Context, id string) ApiUpdateCloudCredsRequest {
+	return ApiUpdateCloudCredsRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+/*
+ * Execute executes the request
+ * @return CloudCredentialsModel
+ */
+func (a *CredentialsApiService) UpdateCloudCredsExecute(r ApiUpdateCloudCredsRequest) (CloudCredentialsModel, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  CloudCredentialsModel
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CredentialsApiService.UpdateCloudCreds")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/v1/cloudCredentials/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.xApiVersion == nil {
+		return localVarReturnValue, nil, reportError("xApiVersion is required and must be specified")
+	}
+	if r.cloudCredentialsModel == nil {
+		return localVarReturnValue, nil, reportError("cloudCredentialsModel is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarHeaderParams["x-api-version"] = parameterToString(*r.xApiVersion, "")
+	// body params
+	localVarPostBody = r.cloudCredentialsModel
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["Bearer"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v Error

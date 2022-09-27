@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -17,17 +17,23 @@ import (
 
 // RepositoriesFilters struct for RepositoriesFilters
 type RepositoriesFilters struct {
+	// Number of repositories to skip.
 	Skip *int32 `json:"skip,omitempty"`
+	// Maximum number of repositories to return.
 	Limit *int32 `json:"limit,omitempty"`
 	OrderColumn *ERepositoryFiltersOrderColumn `json:"orderColumn,omitempty"`
+	// Sorts repositories in the ascending order by the `orderColumn` parameter.
 	OrderAsc *bool `json:"orderAsc,omitempty"`
+	// Filters repositories by the `nameFilter` pattern. The pattern can match any repository parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end.
 	NameFilter *string `json:"nameFilter,omitempty"`
 	TypeFilter *ERepositoryType `json:"typeFilter,omitempty"`
+	// Filters repositories by ID of the backup server.
 	HostIdFilter *string `json:"hostIdFilter,omitempty"`
+	// Filters repositories by path to the folder where backup files are stored.
 	PathFilter *string `json:"pathFilter,omitempty"`
 	// VmbApiFilterModel as json serialized in base64 format (see VmbApiFilterModel)
 	VmbApiFilter *string `json:"vmbApiFilter,omitempty"`
-	// TODO Sets a platform for vmb API to work with
+	// TODO Filters repositories by platform ID for VM Backup API.
 	VmbApiPlatform *string `json:"vmbApiPlatform,omitempty"`
 }
 

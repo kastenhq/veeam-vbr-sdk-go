@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of restore points to skip. (optional)
     limit := int32(56) // int32 | Maximum number of restore points to return. (optional)
     orderColumn := openapiclient.EObjectRestorePointsFiltersOrderColumn("CreationTime") // EObjectRestorePointsFiltersOrderColumn | Sorts restore points by one of the restore point parameters. (optional)
@@ -68,7 +68,7 @@ Other parameters are passed through a pointer to a apiGetAllObjectRestorePointsR
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of restore points to skip. | 
  **limit** | **int32** | Maximum number of restore points to return. | 
  **orderColumn** | [**EObjectRestorePointsFiltersOrderColumn**](EObjectRestorePointsFiltersOrderColumn.md) | Sorts restore points by one of the restore point parameters. | 
@@ -120,7 +120,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the restore point.
 
     configuration := openapiclient.NewConfiguration()
@@ -150,7 +150,7 @@ Other parameters are passed through a pointer to a apiGetObjectRestorePointReque
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -192,7 +192,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the restore point.
 
     configuration := openapiclient.NewConfiguration()
@@ -222,7 +222,7 @@ Other parameters are passed through a pointer to a apiGetObjectRestorePointDisks
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type

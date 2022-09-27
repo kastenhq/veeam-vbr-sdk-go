@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -18,7 +18,7 @@ import (
 // PerformanceTierModel Performance tier.
 type PerformanceTierModel struct {
 	// Array of performance extents.
-	PerformanceExtents *[]PerformanceExtentModel `json:"performanceExtents,omitempty"`
+	PerformanceExtents []PerformanceExtentModel `json:"performanceExtents"`
 	AdvancedSettings *PerformanceTierAdvancedSettingsModel `json:"advancedSettings,omitempty"`
 }
 
@@ -26,8 +26,9 @@ type PerformanceTierModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPerformanceTierModel() *PerformanceTierModel {
+func NewPerformanceTierModel(performanceExtents []PerformanceExtentModel, ) *PerformanceTierModel {
 	this := PerformanceTierModel{}
+	this.PerformanceExtents = performanceExtents
 	return &this
 }
 
@@ -39,36 +40,28 @@ func NewPerformanceTierModelWithDefaults() *PerformanceTierModel {
 	return &this
 }
 
-// GetPerformanceExtents returns the PerformanceExtents field value if set, zero value otherwise.
+// GetPerformanceExtents returns the PerformanceExtents field value
 func (o *PerformanceTierModel) GetPerformanceExtents() []PerformanceExtentModel {
-	if o == nil || o.PerformanceExtents == nil {
+	if o == nil  {
 		var ret []PerformanceExtentModel
 		return ret
 	}
-	return *o.PerformanceExtents
+
+	return o.PerformanceExtents
 }
 
-// GetPerformanceExtentsOk returns a tuple with the PerformanceExtents field value if set, nil otherwise
+// GetPerformanceExtentsOk returns a tuple with the PerformanceExtents field value
 // and a boolean to check if the value has been set.
 func (o *PerformanceTierModel) GetPerformanceExtentsOk() (*[]PerformanceExtentModel, bool) {
-	if o == nil || o.PerformanceExtents == nil {
+	if o == nil  {
 		return nil, false
 	}
-	return o.PerformanceExtents, true
+	return &o.PerformanceExtents, true
 }
 
-// HasPerformanceExtents returns a boolean if a field has been set.
-func (o *PerformanceTierModel) HasPerformanceExtents() bool {
-	if o != nil && o.PerformanceExtents != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetPerformanceExtents gets a reference to the given []PerformanceExtentModel and assigns it to the PerformanceExtents field.
+// SetPerformanceExtents sets field value
 func (o *PerformanceTierModel) SetPerformanceExtents(v []PerformanceExtentModel) {
-	o.PerformanceExtents = &v
+	o.PerformanceExtents = v
 }
 
 // GetAdvancedSettings returns the AdvancedSettings field value if set, zero value otherwise.
@@ -105,7 +98,7 @@ func (o *PerformanceTierModel) SetAdvancedSettings(v PerformanceTierAdvancedSett
 
 func (o PerformanceTierModel) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.PerformanceExtents != nil {
+	if true {
 		toSerialize["performanceExtents"] = o.PerformanceExtents
 	}
 	if o.AdvancedSettings != nil {

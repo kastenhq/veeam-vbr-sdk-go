@@ -1,9 +1,9 @@
 /*
  * Veeam Backup & Replication REST API
  *
- * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br> Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br> Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic. 
+ * This document lists paths (endpoints) of the Veeam Backup & Replication REST API and operations that you can perform by sending HTTP requests to the paths.<br>Requests can contain parameters in their path, query and header. POST and PUT requests can include a request body with resource payload. In response, you receive a conventional HTTP response code, HTTP response header and an optional response body schema that contains a result model.<br>Parameters, request bodies, and response bodies are defined inline or refer to schemas defined globally. Some schemas are polymorphic.
  *
- * API version: 1.0-rev2
+ * API version: 1.1-rev0
  * Contact: support@veeam.com
  */
 
@@ -28,6 +28,11 @@ const (
 	ESESSIONTYPE_REPOSITORY_MAINTENANCE ESessionType = "RepositoryMaintenance"
 	ESESSIONTYPE_REPOSITORY_EVACUATE ESessionType = "RepositoryEvacuate"
 	ESESSIONTYPE_INFRASTRUCTURE_ITEM_DELETION ESessionType = "InfrastructureItemDeletion"
+	ESESSIONTYPE_RESTORE_VM ESessionType = "RestoreVm"
+	ESESSIONTYPE_INSTANT_RECOVERY ESessionType = "InstantRecovery"
+	ESESSIONTYPE_FIRST_CLASS_DISK_INSTANT_RESTORE ESessionType = "FirstClassDiskInstantRestore"
+	ESESSIONTYPE_AZURE_APPLIANCE_DEPLOY ESessionType = "AzureApplianceDeploy"
+	ESESSIONTYPE_QUICK_MIGRATION ESessionType = "QuickMigration"
 )
 
 func (v *ESessionType) UnmarshalJSON(src []byte) error {
@@ -37,7 +42,7 @@ func (v *ESessionType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ESessionType(value)
-	for _, existing := range []ESessionType{ "Infrastructure", "Job", "Automation", "ConfigurationBackup", "RepositoryMaintenance", "RepositoryEvacuate", "InfrastructureItemDeletion",   } {
+	for _, existing := range []ESessionType{ "Infrastructure", "Job", "Automation", "ConfigurationBackup", "RepositoryMaintenance", "RepositoryEvacuate", "InfrastructureItemDeletion", "RestoreVm", "InstantRecovery", "FirstClassDiskInstantRestore", "AzureApplianceDeploy", "QuickMigration",   } {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil

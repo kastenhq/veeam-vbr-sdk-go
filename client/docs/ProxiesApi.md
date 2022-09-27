@@ -33,7 +33,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     proxySpec := *openapiclient.NewProxySpec("Description_example", openapiclient.EProxyType("ViProxy")) // ProxySpec | 
 
     configuration := openapiclient.NewConfiguration()
@@ -59,7 +59,7 @@ Other parameters are passed through a pointer to a apiCreateProxyRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **proxySpec** | [**ProxySpec**](ProxySpec.md) |  | 
 
 ### Return type
@@ -101,7 +101,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup proxy.
 
     configuration := openapiclient.NewConfiguration()
@@ -131,7 +131,7 @@ Other parameters are passed through a pointer to a apiDeleteProxyRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -173,12 +173,12 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     skip := int32(56) // int32 | Number of proxies to skip. (optional)
     limit := int32(56) // int32 | Maximum number of proxies to return. (optional)
     orderColumn := openapiclient.EProxiesFiltersOrderColumn("Name") // EProxiesFiltersOrderColumn | Sorts proxies by one of the proxy parameters. (optional)
     orderAsc := true // bool | Sorts proxies in the ascending order by the `orderColumn` parameter. (optional)
-    nameFilter := "nameFilter_example" // string | Filters proxies by the `nameFilter` pattern. The pattern can match any proxy parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. (optional)
+    nameFilter := "nameFilter_example" // string | Filters proxies by the `nameFilter` pattern. The pattern can match any proxy parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. (optional)
     typeFilter := openapiclient.EProxyType("ViProxy") // EProxyType | Filters proxies by proxy type. (optional)
     hostIdFilter := TODO // string | Filters proxies by ID of the backup server. (optional)
 
@@ -205,12 +205,12 @@ Other parameters are passed through a pointer to a apiGetAllProxiesRequest struc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
  **skip** | **int32** | Number of proxies to skip. | 
  **limit** | **int32** | Maximum number of proxies to return. | 
  **orderColumn** | [**EProxiesFiltersOrderColumn**](EProxiesFiltersOrderColumn.md) | Sorts proxies by one of the proxy parameters. | 
  **orderAsc** | **bool** | Sorts proxies in the ascending order by the &#x60;orderColumn&#x60; parameter. | 
- **nameFilter** | **string** | Filters proxies by the &#x60;nameFilter&#x60; pattern. The pattern can match any proxy parameter. To substitute one or more characters, use the asterisk (*) character at the beginning and/or at the end. | 
+ **nameFilter** | **string** | Filters proxies by the &#x60;nameFilter&#x60; pattern. The pattern can match any proxy parameter. To substitute one or more characters, use the asterisk (*) character at the beginning, at the end or both. | 
  **typeFilter** | [**EProxyType**](EProxyType.md) | Filters proxies by proxy type. | 
  **hostIdFilter** | [**string**](string.md) | Filters proxies by ID of the backup server. | 
 
@@ -253,7 +253,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup proxy.
 
     configuration := openapiclient.NewConfiguration()
@@ -283,7 +283,7 @@ Other parameters are passed through a pointer to a apiGetProxyRequest struct via
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
 
 ### Return type
@@ -325,7 +325,7 @@ import (
 )
 
 func main() {
-    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the following format: *\\<version\\>-\\<revision\\>*.  (default to "1.0-rev2")
+    xApiVersion := "xApiVersion_example" // string | Version and revision of the client REST API. Must be in the *\\<version\\>-\\<revision\\>* format. (default to "1.1-rev0")
     id := TODO // string | ID of the backup proxy.
     proxyModel := *openapiclient.NewProxyModel("Id_example", "Name_example", "Description_example", openapiclient.EProxyType("ViProxy")) // ProxyModel | 
 
@@ -356,7 +356,7 @@ Other parameters are passed through a pointer to a apiUpdateProxyRequest struct 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the following format: *\\&lt;version\\&gt;-\\&lt;revision\\&gt;*.  | [default to &quot;1.0-rev2&quot;]
+ **xApiVersion** | **string** | Version and revision of the client REST API. Must be in the *\\&lt;version\\&gt;-\\&lt;revision\\&gt;* format. | [default to &quot;1.1-rev0&quot;]
 
  **proxyModel** | [**ProxyModel**](ProxyModel.md) |  | 
 
