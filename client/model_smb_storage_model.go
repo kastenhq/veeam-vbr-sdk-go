@@ -26,16 +26,11 @@ type SmbStorageModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSmbStorageModel(share SmbRepositoryShareSettingsModel, repository NetworkRepositorySettingsModel, mountServer MountServerSettingsModel, hostId string, account WasabiCloudStorageAccountModel, container AzureArchiveStorageContainerModel, proxyAppliance S3CompatibleProxyModel, bucket WasabiCloudStorageBucketModel) *SmbStorageModel {
+func NewSmbStorageModel(share SmbRepositoryShareSettingsModel, repository NetworkRepositorySettingsModel, mountServer MountServerSettingsModel) *SmbStorageModel {
 	this := SmbStorageModel{}
-	this.HostId = hostId
 	this.Repository = repository
 	this.MountServer = mountServer
 	this.Share = share
-	this.Account = account
-	this.Container = container
-	this.ProxyAppliance = proxyAppliance
-	this.Bucket = bucket
 	return &this
 }
 

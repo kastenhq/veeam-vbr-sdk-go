@@ -27,13 +27,9 @@ type AmazonCloudCredentialsModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonCloudCredentialsModel(accessKey string, account string, connectionName string, deployment AzureComputeCloudCredentialsDeploymentModel, subscription AzureComputeCloudCredentialsSubscriptionModel) *AmazonCloudCredentialsModel {
+func NewAmazonCloudCredentialsModel(accessKey string) *AmazonCloudCredentialsModel {
 	this := AmazonCloudCredentialsModel{}
 	this.AccessKey = accessKey
-	this.Account = account
-	this.ConnectionName = connectionName
-	this.Deployment = deployment
-	this.Subscription = subscription
 	return &this
 }
 

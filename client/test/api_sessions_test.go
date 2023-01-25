@@ -10,70 +10,71 @@ Testing SessionsApiService
 package client
 
 import (
-    "context"
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/require"
-    "testing"
-    openapiclient "./openapi"
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/veeamhub/veeam-vbr-sdk-go/client"
 )
 
 func Test_client_SessionsApiService(t *testing.T) {
 
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := client.NewConfiguration()
+	apiClient := client.NewAPIClient(configuration)
 
-    t.Run("Test SessionsApiService GetAllSessions", func(t *testing.T) {
+	t.Run("Test SessionsApiService GetAllSessions", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        resp, httpRes, err := apiClient.SessionsApi.GetAllSessions(context.Background()).Execute()
+		resp, httpRes, err := apiClient.SessionsApi.GetAllSessions(context.Background()).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test SessionsApiService GetSession", func(t *testing.T) {
+	t.Run("Test SessionsApiService GetSession", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        var id string
+		var id string
 
-        resp, httpRes, err := apiClient.SessionsApi.GetSession(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.SessionsApi.GetSession(context.Background(), id).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test SessionsApiService GetSessionLogs", func(t *testing.T) {
+	t.Run("Test SessionsApiService GetSessionLogs", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        var id string
+		var id string
 
-        resp, httpRes, err := apiClient.SessionsApi.GetSessionLogs(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.SessionsApi.GetSessionLogs(context.Background(), id).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test SessionsApiService StopSession", func(t *testing.T) {
+	t.Run("Test SessionsApiService StopSession", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        var id string
+		var id string
 
-        resp, httpRes, err := apiClient.SessionsApi.StopSession(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.SessionsApi.StopSession(context.Background(), id).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
 }

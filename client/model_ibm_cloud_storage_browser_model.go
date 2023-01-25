@@ -27,9 +27,8 @@ type IBMCloudStorageBrowserModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIBMCloudStorageBrowserModel(regionType EAmazonRegionType) *IBMCloudStorageBrowserModel {
+func NewIBMCloudStorageBrowserModel() *IBMCloudStorageBrowserModel {
 	this := IBMCloudStorageBrowserModel{}
-	this.RegionType = regionType
 	return &this
 }
 

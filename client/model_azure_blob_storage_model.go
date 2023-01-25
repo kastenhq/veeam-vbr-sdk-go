@@ -31,15 +31,11 @@ type AzureBlobStorageModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureBlobStorageModel(account AzureBlobStorageAccountModel, container AzureBlobStorageContainerModel, mountServer MountServerSettingsModel, hostId string, repository LinuxHardenedRepositorySettingsModel, share SmbRepositoryShareSettingsModel, bucket WasabiCloudStorageBucketModel) *AzureBlobStorageModel {
+func NewAzureBlobStorageModel(account AzureBlobStorageAccountModel, container AzureBlobStorageContainerModel, mountServer MountServerSettingsModel) *AzureBlobStorageModel {
 	this := AzureBlobStorageModel{}
-	this.HostId = hostId
-	this.Repository = repository
 	this.MountServer = mountServer
-	this.Share = share
 	this.Account = account
 	this.Container = container
-	this.Bucket = bucket
 	return &this
 }
 

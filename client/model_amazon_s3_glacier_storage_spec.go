@@ -26,14 +26,9 @@ type AmazonS3GlacierStorageSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonS3GlacierStorageSpec(account AmazonS3StorageAccountModel, bucket AmazonS3GlacierStorageBucketModel, hostId string, repository LinuxHardenedRepositorySettingsModel, mountServer MountServerSettingsModel, share SmbRepositoryShareSettingsModel, container AzureArchiveStorageContainerModel) *AmazonS3GlacierStorageSpec {
+func NewAmazonS3GlacierStorageSpec(account AmazonS3StorageAccountModel, bucket AmazonS3GlacierStorageBucketModel) *AmazonS3GlacierStorageSpec {
 	this := AmazonS3GlacierStorageSpec{}
-	this.HostId = hostId
-	this.Repository = repository
-	this.MountServer = mountServer
-	this.Share = share
 	this.Account = account
-	this.Container = container
 	this.Bucket = bucket
 	return &this
 }

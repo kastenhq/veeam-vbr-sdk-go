@@ -29,14 +29,10 @@ type AzureStorageCloudCredentialsSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureStorageCloudCredentialsSpec(account string, sharedKey string, accessKey string, secretKey string, connectionName string, creationMode EAzureComputeCredentialsCreationMode) *AzureStorageCloudCredentialsSpec {
+func NewAzureStorageCloudCredentialsSpec(account string, sharedKey string) *AzureStorageCloudCredentialsSpec {
 	this := AzureStorageCloudCredentialsSpec{}
-	this.AccessKey = accessKey
-	this.SecretKey = secretKey
 	this.Account = account
 	this.SharedKey = sharedKey
-	this.ConnectionName = connectionName
-	this.CreationMode = creationMode
 	return &this
 }
 

@@ -27,13 +27,9 @@ type AzureStorageCloudCredentialsModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureStorageCloudCredentialsModel(account string, accessKey string, connectionName string, deployment AzureComputeCloudCredentialsDeploymentModel, subscription AzureComputeCloudCredentialsSubscriptionModel) *AzureStorageCloudCredentialsModel {
+func NewAzureStorageCloudCredentialsModel(account string) *AzureStorageCloudCredentialsModel {
 	this := AzureStorageCloudCredentialsModel{}
-	this.AccessKey = accessKey
 	this.Account = account
-	this.ConnectionName = connectionName
-	this.Deployment = deployment
-	this.Subscription = subscription
 	return &this
 }
 

@@ -29,14 +29,10 @@ type AmazonCloudCredentialsSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonCloudCredentialsSpec(accessKey string, secretKey string, account string, sharedKey string, connectionName string, creationMode EAzureComputeCredentialsCreationMode) *AmazonCloudCredentialsSpec {
+func NewAmazonCloudCredentialsSpec(accessKey string, secretKey string) *AmazonCloudCredentialsSpec {
 	this := AmazonCloudCredentialsSpec{}
 	this.AccessKey = accessKey
 	this.SecretKey = secretKey
-	this.Account = account
-	this.SharedKey = sharedKey
-	this.ConnectionName = connectionName
-	this.CreationMode = creationMode
 	return &this
 }
 

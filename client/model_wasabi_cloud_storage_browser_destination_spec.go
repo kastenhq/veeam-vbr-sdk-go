@@ -29,14 +29,10 @@ type WasabiCloudStorageBrowserDestinationSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewWasabiCloudStorageBrowserDestinationSpec(regionId string, bucketName string, regionType EAmazonRegionType, containerName string, servicePoint string, connectionPoint string) *WasabiCloudStorageBrowserDestinationSpec {
+func NewWasabiCloudStorageBrowserDestinationSpec(regionId string, bucketName string) *WasabiCloudStorageBrowserDestinationSpec {
 	this := WasabiCloudStorageBrowserDestinationSpec{}
-	this.RegionType = regionType
-	this.ContainerName = containerName
-	this.ServicePoint = servicePoint
 	this.RegionId = regionId
 	this.BucketName = bucketName
-	this.ConnectionPoint = connectionPoint
 	return &this
 }
 

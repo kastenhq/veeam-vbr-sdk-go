@@ -27,13 +27,9 @@ type GoogleCloudCredentialsModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGoogleCloudCredentialsModel(accessKey string, account string, connectionName string, deployment AzureComputeCloudCredentialsDeploymentModel, subscription AzureComputeCloudCredentialsSubscriptionModel) *GoogleCloudCredentialsModel {
+func NewGoogleCloudCredentialsModel(accessKey string) *GoogleCloudCredentialsModel {
 	this := GoogleCloudCredentialsModel{}
 	this.AccessKey = accessKey
-	this.Account = account
-	this.ConnectionName = connectionName
-	this.Deployment = deployment
-	this.Subscription = subscription
 	return &this
 }
 

@@ -31,14 +31,10 @@ type S3CompatibleStorageSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewS3CompatibleStorageSpec(account S3CompatibleStorageAccountModel, bucket S3CompatibleStorageBucketModel, mountServer MountServerSettingsModel, hostId string, repository LinuxHardenedRepositorySettingsModel, share SmbRepositoryShareSettingsModel, container AzureArchiveStorageContainerModel) *S3CompatibleStorageSpec {
+func NewS3CompatibleStorageSpec(account S3CompatibleStorageAccountModel, bucket S3CompatibleStorageBucketModel, mountServer MountServerSettingsModel) *S3CompatibleStorageSpec {
 	this := S3CompatibleStorageSpec{}
-	this.HostId = hostId
-	this.Repository = repository
 	this.MountServer = mountServer
-	this.Share = share
 	this.Account = account
-	this.Container = container
 	this.Bucket = bucket
 	return &this
 }

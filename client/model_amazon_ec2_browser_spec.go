@@ -25,11 +25,9 @@ type AmazonEC2BrowserSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonEC2BrowserSpec(regionType EAmazonRegionType, servicePoint string, regionId string) *AmazonEC2BrowserSpec {
+func NewAmazonEC2BrowserSpec(regionType EAmazonRegionType) *AmazonEC2BrowserSpec {
 	this := AmazonEC2BrowserSpec{}
 	this.RegionType = regionType
-	this.ServicePoint = servicePoint
-	this.RegionId = regionId
 	return &this
 }
 

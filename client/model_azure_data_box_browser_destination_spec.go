@@ -29,14 +29,10 @@ type AzureDataBoxBrowserDestinationSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureDataBoxBrowserDestinationSpec(containerName string, servicePoint string, regionType EAmazonRegionType, regionId string, bucketName string, connectionPoint string) *AzureDataBoxBrowserDestinationSpec {
+func NewAzureDataBoxBrowserDestinationSpec(containerName string, servicePoint string) *AzureDataBoxBrowserDestinationSpec {
 	this := AzureDataBoxBrowserDestinationSpec{}
-	this.RegionType = regionType
 	this.ContainerName = containerName
 	this.ServicePoint = servicePoint
-	this.RegionId = regionId
-	this.BucketName = bucketName
-	this.ConnectionPoint = connectionPoint
 	return &this
 }
 

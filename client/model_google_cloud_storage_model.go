@@ -30,15 +30,10 @@ type GoogleCloudStorageModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGoogleCloudStorageModel(account GoogleCloudStorageAccountModel, bucket GoogleCloudStorageBucketModel, mountServer MountServerSettingsModel, hostId string, repository LinuxHardenedRepositorySettingsModel, share SmbRepositoryShareSettingsModel, container AzureArchiveStorageContainerModel, proxyAppliance S3CompatibleProxyModel) *GoogleCloudStorageModel {
+func NewGoogleCloudStorageModel(account GoogleCloudStorageAccountModel, bucket GoogleCloudStorageBucketModel, mountServer MountServerSettingsModel) *GoogleCloudStorageModel {
 	this := GoogleCloudStorageModel{}
-	this.HostId = hostId
-	this.Repository = repository
 	this.MountServer = mountServer
-	this.Share = share
 	this.Account = account
-	this.Container = container
-	this.ProxyAppliance = proxyAppliance
 	this.Bucket = bucket
 	return &this
 }

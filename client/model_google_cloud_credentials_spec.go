@@ -29,14 +29,10 @@ type GoogleCloudCredentialsSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGoogleCloudCredentialsSpec(accessKey string, secretKey string, account string, sharedKey string, connectionName string, creationMode EAzureComputeCredentialsCreationMode) *GoogleCloudCredentialsSpec {
+func NewGoogleCloudCredentialsSpec(accessKey string, secretKey string) *GoogleCloudCredentialsSpec {
 	this := GoogleCloudCredentialsSpec{}
 	this.AccessKey = accessKey
 	this.SecretKey = secretKey
-	this.Account = account
-	this.SharedKey = sharedKey
-	this.ConnectionName = connectionName
-	this.CreationMode = creationMode
 	return &this
 }
 

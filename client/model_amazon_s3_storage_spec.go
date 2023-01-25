@@ -31,14 +31,10 @@ type AmazonS3StorageSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonS3StorageSpec(account AmazonS3StorageAccountModel, bucket AmazonS3StorageBucketModel, mountServer MountServerSettingsModel, hostId string, repository LinuxHardenedRepositorySettingsModel, share SmbRepositoryShareSettingsModel, container AzureArchiveStorageContainerModel) *AmazonS3StorageSpec {
+func NewAmazonS3StorageSpec(account AmazonS3StorageAccountModel, bucket AmazonS3StorageBucketModel, mountServer MountServerSettingsModel) *AmazonS3StorageSpec {
 	this := AmazonS3StorageSpec{}
-	this.HostId = hostId
-	this.Repository = repository
 	this.MountServer = mountServer
-	this.Share = share
 	this.Account = account
-	this.Container = container
 	this.Bucket = bucket
 	return &this
 }

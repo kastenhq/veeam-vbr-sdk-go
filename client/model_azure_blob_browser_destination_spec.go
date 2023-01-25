@@ -29,14 +29,10 @@ type AzureBlobBrowserDestinationSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureBlobBrowserDestinationSpec(regionType EAzureRegionType, containerName string, servicePoint string, regionId string, bucketName string, connectionPoint string) *AzureBlobBrowserDestinationSpec {
+func NewAzureBlobBrowserDestinationSpec(regionType EAzureRegionType, containerName string) *AzureBlobBrowserDestinationSpec {
 	this := AzureBlobBrowserDestinationSpec{}
 	this.RegionType = regionType
 	this.ContainerName = containerName
-	this.ServicePoint = servicePoint
-	this.RegionId = regionId
-	this.BucketName = bucketName
-	this.ConnectionPoint = connectionPoint
 	return &this
 }
 

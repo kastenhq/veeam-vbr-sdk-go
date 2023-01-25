@@ -24,11 +24,8 @@ type AzureComputeBrowserSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureComputeBrowserSpec(regionType EAmazonRegionType, servicePoint string, regionId string) *AzureComputeBrowserSpec {
+func NewAzureComputeBrowserSpec() *AzureComputeBrowserSpec {
 	this := AzureComputeBrowserSpec{}
-	this.RegionType = regionType
-	this.ServicePoint = servicePoint
-	this.RegionId = regionId
 	return &this
 }
 

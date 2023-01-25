@@ -27,10 +27,8 @@ type AzureComputeBrowserModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureComputeBrowserModel(hostId string, regions []WasabiCloudStorageRegionBrowserModel) *AzureComputeBrowserModel {
+func NewAzureComputeBrowserModel() *AzureComputeBrowserModel {
 	this := AzureComputeBrowserModel{}
-	this.HostId = hostId
-	this.Regions = regions
 	return &this
 }
 

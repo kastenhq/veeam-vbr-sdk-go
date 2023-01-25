@@ -31,11 +31,8 @@ type AmazonSnowballEdgeBrowserDestinationSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonSnowballEdgeBrowserDestinationSpec(connectionPoint string, regionId string, bucketName string, regionType EAmazonRegionType, containerName string, servicePoint string) *AmazonSnowballEdgeBrowserDestinationSpec {
+func NewAmazonSnowballEdgeBrowserDestinationSpec(connectionPoint string, regionId string, bucketName string) *AmazonSnowballEdgeBrowserDestinationSpec {
 	this := AmazonSnowballEdgeBrowserDestinationSpec{}
-	this.RegionType = regionType
-	this.ContainerName = containerName
-	this.ServicePoint = servicePoint
 	this.RegionId = regionId
 	this.BucketName = bucketName
 	this.ConnectionPoint = connectionPoint

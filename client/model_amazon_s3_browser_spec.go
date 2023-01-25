@@ -28,11 +28,9 @@ type AmazonS3BrowserSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAmazonS3BrowserSpec(regionType EAmazonRegionType, servicePoint string, regionId string) *AmazonS3BrowserSpec {
+func NewAmazonS3BrowserSpec(regionType EAmazonRegionType) *AmazonS3BrowserSpec {
 	this := AmazonS3BrowserSpec{}
 	this.RegionType = regionType
-	this.ServicePoint = servicePoint
-	this.RegionId = regionId
 	return &this
 }
 

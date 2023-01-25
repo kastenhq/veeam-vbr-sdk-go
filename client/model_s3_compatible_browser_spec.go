@@ -29,9 +29,8 @@ type S3CompatibleBrowserSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewS3CompatibleBrowserSpec(regionType EAmazonRegionType) *S3CompatibleBrowserSpec {
+func NewS3CompatibleBrowserSpec() *S3CompatibleBrowserSpec {
 	this := S3CompatibleBrowserSpec{}
-	this.RegionType = regionType
 	return &this
 }
 

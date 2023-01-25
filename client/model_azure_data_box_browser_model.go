@@ -27,10 +27,8 @@ type AzureDataBoxBrowserModel struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAzureDataBoxBrowserModel(regionType EAmazonRegionType, regions []WasabiCloudStorageRegionBrowserModel) *AzureDataBoxBrowserModel {
+func NewAzureDataBoxBrowserModel() *AzureDataBoxBrowserModel {
 	this := AzureDataBoxBrowserModel{}
-	this.RegionType = regionType
-	this.Regions = regions
 	return &this
 }
 

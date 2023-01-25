@@ -31,11 +31,8 @@ type IBMCloudStorageBrowserDestinationSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIBMCloudStorageBrowserDestinationSpec(connectionPoint string, regionId string, bucketName string, regionType EAmazonRegionType, containerName string, servicePoint string) *IBMCloudStorageBrowserDestinationSpec {
+func NewIBMCloudStorageBrowserDestinationSpec(connectionPoint string, regionId string, bucketName string) *IBMCloudStorageBrowserDestinationSpec {
 	this := IBMCloudStorageBrowserDestinationSpec{}
-	this.RegionType = regionType
-	this.ContainerName = containerName
-	this.ServicePoint = servicePoint
 	this.RegionId = regionId
 	this.BucketName = bucketName
 	this.ConnectionPoint = connectionPoint

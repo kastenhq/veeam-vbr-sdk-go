@@ -26,11 +26,8 @@ type GoogleCloudStorageBrowserSpec struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGoogleCloudStorageBrowserSpec(regionType EAmazonRegionType, servicePoint string, regionId string) *GoogleCloudStorageBrowserSpec {
+func NewGoogleCloudStorageBrowserSpec() *GoogleCloudStorageBrowserSpec {
 	this := GoogleCloudStorageBrowserSpec{}
-	this.RegionType = regionType
-	this.ServicePoint = servicePoint
-	this.RegionId = regionId
 	return &this
 }
 

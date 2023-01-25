@@ -10,28 +10,29 @@ Testing ConnectionApiService
 package client
 
 import (
-    "context"
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/require"
-    "testing"
-    openapiclient "./openapi"
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/veeamhub/veeam-vbr-sdk-go/client"
 )
 
 func Test_client_ConnectionApiService(t *testing.T) {
 
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := client.NewConfiguration()
+	apiClient := client.NewAPIClient(configuration)
 
-    t.Run("Test ConnectionApiService GetConnectionCertificate", func(t *testing.T) {
+	t.Run("Test ConnectionApiService GetConnectionCertificate", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        resp, httpRes, err := apiClient.ConnectionApi.GetConnectionCertificate(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ConnectionApi.GetConnectionCertificate(context.Background()).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
 }

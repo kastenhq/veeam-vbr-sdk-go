@@ -10,52 +10,53 @@ Testing ServiceApiService
 package client
 
 import (
-    "context"
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/require"
-    "testing"
-    openapiclient "./openapi"
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/veeamhub/veeam-vbr-sdk-go/client"
 )
 
 func Test_client_ServiceApiService(t *testing.T) {
 
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := client.NewConfiguration()
+	apiClient := client.NewAPIClient(configuration)
 
-    t.Run("Test ServiceApiService GetServerCertificate", func(t *testing.T) {
+	t.Run("Test ServiceApiService GetServerCertificate", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        resp, httpRes, err := apiClient.ServiceApi.GetServerCertificate(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ServiceApi.GetServerCertificate(context.Background()).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test ServiceApiService GetServerInfo", func(t *testing.T) {
+	t.Run("Test ServiceApiService GetServerInfo", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        resp, httpRes, err := apiClient.ServiceApi.GetServerInfo(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ServiceApi.GetServerInfo(context.Background()).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test ServiceApiService GetServerTime", func(t *testing.T) {
+	t.Run("Test ServiceApiService GetServerTime", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        resp, httpRes, err := apiClient.ServiceApi.GetServerTime(context.Background()).Execute()
+		resp, httpRes, err := apiClient.ServiceApi.GetServerTime(context.Background()).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
 }

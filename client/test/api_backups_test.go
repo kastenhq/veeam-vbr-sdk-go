@@ -10,56 +10,57 @@ Testing BackupsApiService
 package client
 
 import (
-    "context"
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/require"
-    "testing"
-    openapiclient "./openapi"
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/veeamhub/veeam-vbr-sdk-go/client"
 )
 
 func Test_client_BackupsApiService(t *testing.T) {
 
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
+	configuration := client.NewConfiguration()
+	apiClient := client.NewAPIClient(configuration)
 
-    t.Run("Test BackupsApiService GetAllBackups", func(t *testing.T) {
+	t.Run("Test BackupsApiService GetAllBackups", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        resp, httpRes, err := apiClient.BackupsApi.GetAllBackups(context.Background()).Execute()
+		resp, httpRes, err := apiClient.BackupsApi.GetAllBackups(context.Background()).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test BackupsApiService GetBackup", func(t *testing.T) {
+	t.Run("Test BackupsApiService GetBackup", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        var id string
+		var id string
 
-        resp, httpRes, err := apiClient.BackupsApi.GetBackup(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.BackupsApi.GetBackup(context.Background(), id).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
-    t.Run("Test BackupsApiService GetBackupObjects", func(t *testing.T) {
+	t.Run("Test BackupsApiService GetBackupObjects", func(t *testing.T) {
 
-        t.Skip("skip test")  // remove to run test
+		t.Skip("skip test") // remove to run test
 
-        var id string
+		var id string
 
-        resp, httpRes, err := apiClient.BackupsApi.GetBackupObjects(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.BackupsApi.GetBackupObjects(context.Background(), id).Execute()
 
-        require.Nil(t, err)
-        require.NotNil(t, resp)
-        assert.Equal(t, 200, httpRes.StatusCode)
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
 
-    })
+	})
 
 }
