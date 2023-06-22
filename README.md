@@ -59,33 +59,89 @@ make generate golang_spec=<path_to_specification>
 Create a new client via vbrapi.NewClient()
 
 ```golang
-serverAddress := "127.0.0.1"
-serverPort := 1234 // You can set 0 to use DefaultPort value(see in const.go)
-skipSSLVerify := false
-
-client, err := vbrapi.NewClient(serverAddress, serverPort, skipSSLVerify)
+serverHost := "https://127.0.0.1:9398"
+vbrClient := vbrclient.NewClientWithResponses(serverHost)
 ```
 
-As a result you will get client which can make requests which allow to be made without authentication.
-To be able to make authenticated requests you have to authenticate your client:
-
+You can also provide your own http.Client to the constructor:
 ```golang
-var vbrSecret = &xgo.SecretVbr{
-    Password: secret.Password,
-    User:     secret.User,
-}
-err := vbrClient.Authenticate(ctx, vbrSecret); 
+tlsClient := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+		},
+	}
+serverHost := "https://127.0.0.1:9398"
+cl := vbrclient.NewClientWithResponses(serverHost, vbrclient.WithHTTPClient(tlsClient))
 ```
 
-If the authentication went without errors, your client is now authenticated. No need to create another one or provide any context.
+As a result you will get client which can make requests allowed to be made without authentication.
+For example, you can get server info:
+```golang
+rsi, err := cl.GetServerInfoWithResponse(context.Background(), &vbrclient.GetServerInfoParams{
+		XApiVersion: "1.1-rev0",
+	})
+if err != nil {
+	panic(err)
+}
+log.Print(rsi.JSON200)
+```
 
+To be able to make authenticated requests you have to authenticate your client. 
+Client uses bearer token authentication. So first of all you have to get the token:
+```golang
+user := "vbruser"
+password := "vbrpassword"
+
+rl, err := cl.CreateTokenWithFormdataBodyWithResponse(context.Background(), &vbrclient.CreateTokenParams{
+		XApiVersion: "1.1-rev0",
+	}, vbrclient.CreateTokenFormdataRequestBody{
+		GrantType: "password",
+		Username:  &user,
+		Password:  &pass,
+	})
+if err != nil {
+	panic(err)
+}
+```
+
+Next, you need to create a new client with the bearer token provider:
+```golang
+bearerTokenProvider, bearerTokenProviderErr := securityprovider.NewSecurityProviderBearerToken(rl.JSON200.AccessToken)
+if bearerTokenProviderErr != nil {
+	panic(bearerTokenProviderErr)
+}
+
+serverHost := "https://127.0.0.1:9398"
+authcl, err := vbrclient.NewClientWithResponses(serverHost, vbrclient.WithRequestEditorFn(bearerTokenProvider.Intercept))
+if err != nil {
+	panic(err)
+}
+```
+
+Now you can make authenticated requests:
+```golang
+nameFilter := "test"
+rgr, err := authcl.GetAllRepositoriesWithResponse(context.Background(), &vbrclient.GetAllRepositoriesParams{
+		XApiVersion: "1.1-rev0",
+		NameFilter:  &nameFilter,
+	})
+if err != nil {
+	panic(err)
+}
+for rmi := range rgr.JSON200.Data {
+	rm := rgr.JSON200.Data[rmi]
+	log.Info(rm)
+}
+```
 ### Making requests
 
 There are 2 types of Client interfaces provided by the library
 * Client which returns unparsed `*http.Response`
 * Client which returns parsed model
 
-We use one with parsed models, so, for each endpoint you will have 2 functions. For example:
+So, if you're using client with parsed models you will have 2 functions for each `path` item. For example:
 ```golang
 GetServerInfo(ctx context.Context, params *GetServerInfoParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 GetServerInfoWithResponse(ctx context.Context, params *GetServerInfoParams, reqEditors ...RequestEditorFn) (*GetServerInfoResponse, error)
@@ -125,31 +181,6 @@ func (r GetServerInfoResponse) StatusCode() int {
 ```
 
 Please note that you should check status separately, the error will be returned only in case of failed request. If server returned an answer, no error will be returned.
-
-Let's put it all together in the single example:
-```golang
-func (v *Client) GetServerInfo(ctx context.Context) (ServerInfo, error) {
-	rs, err := v.GetServerInfoWithResponse(ctx, &vbrclient.GetServerInfoParams{
-		XApiVersion: XapiVerV12,
-	})
-	if err != nil {
-		return ServerInfo{}, kerrors.Wrap(err, "Failed to get server info")
-	}
-
-	if rs.StatusCode() != 200 {
-		return ServerInfo{}, kerrors.New("Failed to get server info").WithField("status", rs.Status())
-	}
-
-	si := ServerInfo{
-		VbrID:        *rs.JSON200.VbrId,
-		Name:         rs.JSON200.Name,
-		BuildVersion: rs.JSON200.BuildVersion,
-	}
-
-	return si, nil
-}
-
-```
 
 ## Known Issues
 * If you convert specification from `JSON` to `YAML` usiang `oapifixer` tool the order of sections in the specification will be changed(to alphabetical). It is not a problem for the generator but it makes it difficult to review changes in the specification.
