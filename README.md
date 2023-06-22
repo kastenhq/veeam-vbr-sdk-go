@@ -63,7 +63,7 @@ serverHost := "https://127.0.0.1:9398"
 vbrClient := vbrclient.NewClientWithResponses(serverHost)
 ```
 
-You can also provide your own http.Client to the constructor:
+You can also provide your own `http.Client` to the constructor:
 ```golang
 tlsClient := &http.Client{
 		Transport: &http.Transport{
