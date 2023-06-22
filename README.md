@@ -9,6 +9,10 @@ Client generation is based on https://github.com/deepmap/oapi-codegen generator.
 Due to specific of Golang, we had to make some changes in the original specification to make it work with the generator.
 You can find changes description in the [Specification](#specification) section.
 
+## Project layout
+* `spec` - contains specification files. Both original `VBR REST API` specification and generated `openapi_spec.yaml` are placed here.
+* `tools` - contains additional tools. Currently, it contains only `oapifixer` tool which is used to apply required changes to the original specification.
+* `vbrclient` - contains generated client. It is not recommended to change anything in this directory. If you want to change something, please, change the specification and regenerate the client.
 
 ## Specification
 `openapi_spec.yaml` does not contain the whole original `VBR REST API` specification. We made several changes described below. 
