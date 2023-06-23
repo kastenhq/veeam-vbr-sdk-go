@@ -1,5 +1,0 @@
-go 1.19
-
-use ./tools/oapifixer
-use ./tools/testclient
-use ./vbrclient

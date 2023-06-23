@@ -2,12 +2,13 @@ package main
 
 import (
 	"flag"
-	"github.com/pb33f/libopenapi"
-	"github.com/pb33f/libopenapi/datamodel"
 	"log"
-	"oapifixer/actions"
 	"os"
 	"path/filepath"
+	"vbrclient/tools/oapifixer/actions"
+
+	"github.com/pb33f/libopenapi"
+	"github.com/pb33f/libopenapi/datamodel"
 )
 
 func main() {
