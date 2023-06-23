@@ -4,14 +4,14 @@ vbr_spec = spec/swagger.json
 default: generate 
 cleanup:
 	@echo "Cleaning up..."
-	rm -f ./vbrclient/types.go
-	rm -f ./vbrclient/client.go
+	rm -f ./pkg/client/types.go
+	rm -f ./pkg/client/client.go
 
 generate: cleanup
 	@echo "Generating types..."
-	oapi-codegen -generate types -o ./vbrclient/types.go -package vbrclient ${golang_spec}
+	oapi-codegen -generate types -o ./pkg/client/types.go -package client ${golang_spec}
 	@echo "Generating client..."
-	oapi-codegen -generate client -o ./vbrclient/client.go -package vbrclient ${golang_spec}
+	oapi-codegen -generate client -o ./pkg/client/client.go -package client ${golang_spec}
 
 convert:
 	@echo "Converting spec..."
