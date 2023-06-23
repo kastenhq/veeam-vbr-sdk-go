@@ -12,6 +12,7 @@ generate: cleanup
 	oapi-codegen -generate types -o ./vbrclient/types.go -package vbrclient ${golang_spec}
 	@echo "Generating client..."
 	oapi-codegen -generate client -o ./vbrclient/client.go -package vbrclient ${golang_spec}
+	cd vbrclient && go mod tidy
 
 convert:
 	@echo "Converting spec..."
