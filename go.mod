@@ -1,4 +1,4 @@
-module vbrclient
+module github.com/veeamhub/veeam-vbr-sdk-go/v2
 
 go 1.20
 

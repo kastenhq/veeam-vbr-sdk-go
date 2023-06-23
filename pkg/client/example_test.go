@@ -5,7 +5,8 @@ import (
 	"crypto/tls"
 	"log"
 	"net/http"
-	"vbrclient/pkg/client"
+
+	"github.com/veeamhub/veeam-vbr-sdk-go/v2/pkg/client"
 
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
 )
